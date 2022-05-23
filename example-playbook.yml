@@ -1,0 +1,53 @@
+---
+
+# Every playbook is comprised of 1:many plays, laid out in "list" form (dict in python)
+
+# Start the play with a name
+- name: connect to PLC and grab some information
+
+# Next, we define what hosts to run against
+# In this case, we'll use "all" and define an inventory elsewhere, and can define limits in controller
+  hosts:
+    - all
+
+# By default, ansible will attempt to connect to a system and gather some base info
+# Since we're working against non-standard systems, we can skip this
+  gather_facts: no
+
+# Vars in ansible can be defined in a ton of different places, and can be defined at the 'play' level
+# Here we'll do a bit of faking out ansible, making it think it's running against a different system but really running against the local system
+  vars:
+    ansible_connection: local
+
+# Now, we have a few keywords to use to control execution flow, in order: pre_tasks, roles, tasks, and post_tasks
+# I like to put tasks that "set up for" the actual automation/work in the pre_tasks block
+  pre_tasks:
+    - name: tasks we only need to run once
+      block:
+        - name: ensure venv has pycomm3
+          ansible.builtin.pip:
+            name:
+              - pycomm3
+            virtualenv: /tmp/aap-automation
+            virtualenv_python: python3.6
+        - name: copy our script to the venv path
+          ansible.builtin.copy:
+            src: files/python-script.py
+            dest: /tmp/aap-automation/
+      run_once: yes
+
+  tasks:
+    - name: trigger our python script
+      ansible.builtin.shell:
+        cmd: |
+          source /tmp/aap-automation/db/venv/activate
+          python-script.py {{ ansible_host }}/backplane/{{ slot }} -GrabData
+        chdir: /tmp/aap-automation/
+  
+  post_tasks:
+    - name: cleanup after ourselves
+      ansible.builtin.file:
+        path: /tmp/aap-automation
+        state: absent
+    
+  

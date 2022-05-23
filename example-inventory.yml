@@ -1,0 +1,14 @@
+---
+
+all:
+  children:
+    plc:
+      plc-1:
+        ansible_host: 10.15.123.234
+        slot: 2
+      plc-2:
+        ansible_host: 192.168.15.233
+        slot: 4
+      plc-3:
+        ansible_host: 172.16.18.55
+        slot: 0
