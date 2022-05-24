@@ -30,15 +30,21 @@
               - pycomm3
             virtualenv: /tmp/aap-automation
             virtualenv_command: python3 -m venv
-        - name: copy our script to the venv path
+        - name: copy ensure-firmware script to the venv path
           ansible.builtin.copy:
             src: scripts/ensure-firmware-revision.py
             dest: /tmp/aap-automation/
             mode: +x
+        - name: copy ensure-tag script to the venv path
+          ansible.builtin.copy:
+            src: scripts/ensure-tag.py
+            dest: /tmp/aap-automation/
+            mode: +x
+
       run_once: yes
 
   tasks:
-    - name: trigger our python script
+    - name: Ensure firmware revision matches inventory expected value
       ansible.builtin.shell:
         cmd: |
           source /tmp/aap-automation/bin/activate
@@ -46,16 +52,26 @@
         chdir: /tmp/aap-automation/
         executable: /bin/bash
 
+    - name: Ensure tag modified by ansible is set to true
+      ansible.builtin.shell:
+        cmd: |
+          source /tmp/aap-automation/bin/activate
+          /tmp/aap-automation/ensure-tag.py {{ ansible_host }}/backplane/{{ slot }} modified_by_ansible True
+        chdir: /tmp/aap-automation/
+        executable: /bin/bash
+
 #   - name: Ensure the host is running the expected firmware
 #     ansiblle.ra.firmwarecheck:
 #       expected: {{ expected_firmware }}
+#       update: false # Change the firmware if it doesn't match? Not possible with pycomm3
 #         
 #   - name: Ensure tag 'yy' is set to value 2
-#     ansible.ra.plc.tagwrite:
-#       tag: yy
+#     ansible.ra.plc.modifytag:
+#       tag_name: yy
 #       value: 2
+#       create: True # Can we create tags? Or does that have to be part of the program?
 #
-#   - name: Ensure program in github.com/ra/myprogram is downloaded to the host
+#   - name: Ensure program in github.com/ra/myprogram is downloaded to the host # Not possible with pycomm3
 #      absible.rockwell.plc.download:
 #        program_src: {{ program_src }}
   
