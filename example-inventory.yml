@@ -3,12 +3,17 @@
 all:
   children:
     plc:
-      plc-1:
-        ansible_host: 10.15.123.234
-        slot: 2
-      plc-2:
-        ansible_host: 192.168.15.233
-        slot: 4
-      plc-3:
-        ansible_host: 172.16.18.55
-        slot: 0
+      hosts:
+        plc-1:
+          ansible_host: 192.168.1.11
+          slot: 0
+          expected_firmware: 33 
+          expected_program: https://factorytalk.com/my/cool/program
+        plc-2:
+          ansible_host: 192.168.1.40
+          slot: 0
+          expected_firmware: 33
+        plc-3:
+          ansible_host: 192.168.1.11
+          slot: 3
+          expected_firmware: 32

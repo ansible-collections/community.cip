@@ -29,25 +29,39 @@
             name:
               - pycomm3
             virtualenv: /tmp/aap-automation
-            virtualenv_python: python3.6
+            virtualenv_command: python3 -m venv
         - name: copy our script to the venv path
           ansible.builtin.copy:
-            src: files/python-script.py
+            src: scripts/ensure-firmware-revision.py
             dest: /tmp/aap-automation/
+            mode: +x
       run_once: yes
 
   tasks:
     - name: trigger our python script
       ansible.builtin.shell:
         cmd: |
-          source /tmp/aap-automation/db/venv/activate
-          python-script.py {{ ansible_host }}/backplane/{{ slot }} -GrabData
+          source /tmp/aap-automation/bin/activate
+          /tmp/aap-automation/ensure-firmware-revision.py {{ ansible_host }}/backplane/{{ slot }} {{ expected_firmware }} 
         chdir: /tmp/aap-automation/
+        executable: /bin/bash
+
+#   - name: Ensure the host is running the expected firmware
+#     ansiblle.ra.firmwarecheck:
+#       expected: {{ expected_firmware }}
+#         
+#   - name: Ensure tag 'yy' is set to value 2
+#     ansible.ra.plc.tagwrite:
+#       tag: yy
+#       value: 2
+#
+#   - name: Ensure program in github.com/ra/myprogram is downloaded to the host
+#      absible.rockwell.plc.download:
+#        program_src: {{ program_src }}
   
   post_tasks:
     - name: cleanup after ourselves
       ansible.builtin.file:
         path: /tmp/aap-automation
         state: absent
-    
-  
+      run_once: yes
