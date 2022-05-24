@@ -1,0 +1,26 @@
+╭─aaron@BX76P13 ~/cloud-native/pycomm3/rockwell-windows-automation ‹main●›
+╰─$ ansible-playbook -v -i example-inventory.yml example-playbook.yml
+
+#!/usr/bin/env python3
+No config file found; using defaults
+
+PLAY [connect to PLC and grab some information] ******************************************************************************************************************************************************************************************************************************
+
+TASK [ensure venv has pycomm3] ***********************************************************************************************************************************************************************************************************************************************
+changed: [plc-1] => {"ansible_facts": {"discovered_interpreter_python": "/usr/bin/python3"}, "changed": true, "cmd": ["/tmp/aap-automation/bin/pip3", "install", "pycomm3"], "name": ["pycomm3"], "requirements": null, "state": "present", "stderr": "", "stderr_lines": [], "stdout": "Collecting pycomm3\n  Using cached pycomm3-1.2.7-py3-none-any.whl (94 kB)\nInstalling collected packages: pycomm3\nSuccessfully installed pycomm3-1.2.7\n", "stdout_lines": ["Collecting pycomm3", "  Using cached pycomm3-1.2.7-py3-none-any.whl (94 kB)", "Installing collected packages: pycomm3", "Successfully installed pycomm3-1.2.7"], "version": null, "virtualenv": "/tmp/aap-automation"}
+
+TASK [copy our script to the venv path] **************************************************************************************************************************************************************************************************************************************
+changed: [plc-1] => {"changed": true, "checksum": "d91787fa41b5d6539b6fb0a0d8282b4cdfeabbcc", "dest": "/tmp/aap-automation/python-script.py", "gid": 1000, "group": "aaron", "md5sum": "b1b1f7d6b7ea26e8ad62d8155244e23c", "mode": "0755", "owner": "aaron", "size": 376, "src": "/home/aaron/.ansible/tmp/ansible-tmp-1653407503.5723472-14450-62621005715064/source", "state": "file", "uid": 1000}
+
+TASK [trigger our python script] *********************************************************************************************************************************************************************************************************************************************
+changed: [plc-2] => {"changed": true, "cmd": "source /tmp/aap-automation/bin/activate\n/tmp/aap-automation/python-script.py 192.168.1.40/backplane/0 33 #-GrabData\n", "delta": "0:00:00.043110", "end": "2022-05-24 10:51:44.288678", "msg": "", "rc": 0, "start": "2022-05-24 10:51:44.245568", "stderr": "", "stderr_lines": [], "stdout": "Expected revision: 33 | Module Revision: 33", "stdout_lines": ["Expected revision: 33 | Module Revision: 33"]}
+changed: [plc-1] => {"changed": true, "cmd": "source /tmp/aap-automation/bin/activate\n/tmp/aap-automation/python-script.py 192.168.1.11/backplane/0 33 #-GrabData\n", "delta": "0:00:00.049665", "end": "2022-05-24 10:51:44.293418", "msg": "", "rc": 0, "start": "2022-05-24 10:51:44.243753", "stderr": "", "stderr_lines": [], "stdout": "Expected revision: 33 | Module Revision: 33", "stdout_lines": ["Expected revision: 33 | Module Revision: 33"]}
+changed: [plc-3] => {"changed": true, "cmd": "source /tmp/aap-automation/bin/activate\n/tmp/aap-automation/python-script.py 192.168.1.11/backplane/3 32 #-GrabData\n", "delta": "0:00:00.049331", "end": "2022-05-24 10:51:44.293084", "msg": "", "rc": 0, "start": "2022-05-24 10:51:44.243753", "stderr": "", "stderr_lines": [], "stdout": "Expected revision: 32 | Module Revision: 32", "stdout_lines": ["Expected revision: 32 | Module Revision: 32"]}
+
+TASK [cleanup after ourselves] ***********************************************************************************************************************************************************************************************************************************************
+changed: [plc-1] => {"changed": true, "path": "/tmp/aap-automation", "state": "absent"}
+
+PLAY RECAP *******************************************************************************************************************************************************************************************************************************************************************
+plc-1                      : ok=4    changed=4    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0
+plc-2                      : ok=1    changed=1    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0
+plc-3                      : ok=1    changed=1    unreachable=0    failed=0    skipped=0    rescued=0    ignored=0
