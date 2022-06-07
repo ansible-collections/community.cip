@@ -3,7 +3,7 @@
 # Every playbook is comprised of 1:many plays, laid out in "list" form (dict in python)
 
 # Start the play with a name
-- name: connect to PLC and grab some information
+- name: connect to PLC and ensure firmware revision matches expected value
 
 # Next, we define what hosts to run against
 # In this case, we'll use "all" and define an inventory elsewhere, and can define limits in controller
@@ -59,6 +59,8 @@
           /tmp/aap-automation/ensure-tag.py {{ ansible_host }}/backplane/{{ slot }} modified_by_ansible True
         chdir: /tmp/aap-automation/
         executable: /bin/bash
+      when: writable_tag == True
+
 
 #   - name: Ensure the host is running the expected firmware
 #     ansiblle.ra.firmwarecheck:
