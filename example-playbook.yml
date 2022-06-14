@@ -59,7 +59,13 @@
           /tmp/aap-automation/ensure-tag.py {{ ansible_host }}/backplane/{{ slot }} modified_by_ansible True
         chdir: /tmp/aap-automation/
         executable: /bin/bash
-      when: writable_tag == True
+      register: tag_modified
+      changed_when:
+        - "matches current value in controller' not in tag_modified.stdout"
+      when:
+        - writable_tag == True
+      
+      
 
 
 #   - name: Ensure the host is running the expected firmware
