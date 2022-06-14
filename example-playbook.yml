@@ -61,7 +61,7 @@
         executable: /bin/bash
       register: tag_modified
       changed_when:
-        - "matches current value in controller' not in tag_modified.stdout"
+        - "'matches current value in controller' not in tag_modified.stdout"
       when:
         - writable_tag == True
       
