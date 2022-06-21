@@ -5,11 +5,11 @@ all:
     plc_write_tag:
       hosts:
         ControlLogix-L85E:
-          ansible_host: 192.168.1.11
+          ansible_host: 192.168.117.4
           slot: 0
           expected_firmware: 33 
         ControlLogix-L73:
-          ansible_host: 192.168.1.11
+          ansible_host: 192.168.117.4
           slot: 3
           expected_firmware: 34
       vars:
@@ -17,16 +17,16 @@ all:
     plc_no_tag:
       hosts:
         ControlLogix-L63:
-          ansible_host: 192.168.1.11
+          ansible_host: 192.168.117.4
           slot: 4
           expected_firmware: 20
         ControlLogix-LSP:
-          ansible_host: 192.168.1.11
+          ansible_host: 192.168.117.4
           slot: 5
           expected_firmware: 17
-        CompactLogix-5480:
-          ansible_host: 192.168.1.8
-          slot: 0
-          expected_firmware: 31
+#       CompactLogix-5480:
+#         ansible_host: 192.168.117.8
+#         slot: 0
+#         expected_firmware: 31
       vars:
         writable_tag: False
