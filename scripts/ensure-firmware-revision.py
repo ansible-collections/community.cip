@@ -7,7 +7,7 @@ import sys
 # argv[1]: Path to the module to query
 # argv[2]: Expected major firmware revision
 rc = 0
-module_path = sys.argv[1]
+module_path = sys.argv[1] #192.168.1.11/bp/0
 expected_revision = int(sys.argv[2])
 
 with LogixDriver(module_path) as plc:

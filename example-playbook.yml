@@ -51,6 +51,9 @@
           /tmp/aap-automation/ensure-firmware-revision.py {{ ansible_host }}/backplane/{{ slot }} {{ expected_firmware }} 
         chdir: /tmp/aap-automation/
         executable: /bin/bash
+      register: firmware_ver
+      changed_when: False
+      failed_when: firmware_ver.rc != 0
 
     - name: Ensure tag modified by ansible is set to true
       ansible.builtin.shell:
@@ -69,19 +72,19 @@
 
 
 #   - name: Ensure the host is running the expected firmware
-#     ansiblle.ra.firmwarecheck:
+#     ra.firmwarecheck:
 #       expected: {{ expected_firmware }}
 #       update: false # Change the firmware if it doesn't match? Not possible with pycomm3
 #         
 #   - name: Ensure tag 'yy' is set to value 2
-#     ansible.ra.plc.modifytag:
+#     ra.plc.modifytag:
 #       tag_name: yy
 #       value: 2
 #       create: True # Can we create tags? Or does that have to be part of the program?
 #
 #   - name: Ensure program in github.com/ra/myprogram is downloaded to the host # Not possible with pycomm3
-#      absible.rockwell.plc.download:
-#        program_src: {{ program_src }}
+#     ra.plc.download:
+#       program_src: {{ program_src }}
   
   post_tasks:
     - name: cleanup after ourselves
