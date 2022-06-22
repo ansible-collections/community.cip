@@ -8,12 +8,14 @@ all:
           ansible_host: 192.168.117.4
           slot: 0
           expected_firmware: 33 
+          LED: True
         ControlLogix-L73:
           ansible_host: 192.168.117.4
           slot: 3
           expected_firmware: 34
       vars:
         writable_tag: True
+        LED: False
     plc_no_tag:
       hosts:
         ControlLogix-L63:
@@ -30,3 +32,4 @@ all:
 #         expected_firmware: 31
       vars:
         writable_tag: False
+        LED: False

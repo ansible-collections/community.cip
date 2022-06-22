@@ -68,6 +68,18 @@
       when:
         - writable_tag == True
       
+    - name: Ensure tag 'Toggle' is set to true for all controller connected to a LED
+      ansible.builtin.shell:
+        cmd: |
+          source /tmp/aap-automation/bin/activate
+          /tmp/aap-automation/ensure-tag.py {{ ansible_host }}/backplane/{{ slot }} Toggle True
+        chdir: /tmp/aap-automation/
+        executable: /bin/bash
+      register: tag_modified
+      changed_when:
+        - "'matches current value in controller' not in tag_modified.stdout"
+      when:
+        - LED == True
       
 
 
