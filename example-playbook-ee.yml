@@ -1,0 +1,76 @@
+---
+
+# Every playbook is comprised of 1:many plays, laid out in "list" form (dict in python)
+
+# Start the play with a name
+- name: connect to PLC and ensure firmware revision matches expected value
+
+# Next, we define what hosts to run against
+# In this case, we'll use "all" and define an inventory elsewhere, and can define limits in controller
+  hosts:
+    - all
+
+# By default, ansible will attempt to connect to a system and gather some base info
+# Since we're working against non-standard systems, we can skip this
+  gather_facts: no
+
+# Vars in ansible can be defined in a ton of different places, and can be defined at the 'play' level
+# Here we'll do a bit of faking out ansible, making it think it's running against a different system but really running against the local system
+  vars:
+    ansible_connection: local
+
+ tasks:
+    - name: Ensure firmware revision matches inventory expected value
+      ansible.builtin.shell:
+        cmd: |
+          source /tmp/aap-automation/bin/activate
+          /tmp/aap-automation/ensure-firmware-revision.py {{ ansible_host }}/backplane/{{ slot }} {{ expected_firmware }} 
+        chdir: /tmp/aap-automation/
+        executable: /bin/bash
+      register: firmware_ver
+      changed_when: False
+      failed_when: firmware_ver.rc != 0
+
+    - name: Ensure tag modified by ansible is set to true
+      ansible.builtin.shell:
+        cmd: |
+          source /tmp/aap-automation/bin/activate
+          /tmp/aap-automation/ensure-tag.py {{ ansible_host }}/backplane/{{ slot }} modified_by_ansible True
+        chdir: /tmp/aap-automation/
+        executable: /bin/bash
+      register: tag_modified
+      changed_when:
+        - "'matches current value in controller' not in tag_modified.stdout"
+      when:
+        - writable_tag == True
+      
+    - name: Ensure tag 'Toggle' is set to true for all controller connected to a LED
+      ansible.builtin.shell:
+        cmd: |
+          source /tmp/aap-automation/bin/activate
+          /tmp/aap-automation/ensure-tag.py {{ ansible_host }}/backplane/{{ slot }} Toggle True
+        chdir: /tmp/aap-automation/
+        executable: /bin/bash
+      register: tag_modified
+      changed_when:
+        - "'matches current value in controller' not in tag_modified.stdout"
+      when:
+        - LED == True
+      
+
+
+#   - name: Ensure the host is running the expected firmware
+#     ra.firmwarecheck:
+#       expected: {{ expected_firmware }}
+#       update: false # Change the firmware if it doesn't match? Not possible with pycomm3
+#         
+#   - name: Ensure tag 'yy' is set to value 2
+#     ra.plc.modifytag:
+#       tag_name: yy
+#       value: 2
+#       create: True # Can we create tags? Or does that have to be part of the program?
+#
+#   - name: Ensure program in github.com/ra/myprogram is downloaded to the host # Not possible with pycomm3
+#     ra.plc.download:
+#       program_src: {{ program_src }}
+  
