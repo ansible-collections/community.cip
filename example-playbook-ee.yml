@@ -19,7 +19,7 @@
   vars:
     ansible_connection: local
 
- tasks:
+  tasks:
     - name: Ensure firmware revision matches inventory expected value
       ansible.builtin.shell:
         cmd: |
