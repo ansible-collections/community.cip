@@ -16,31 +16,57 @@ options:
     description:
       - Specifies the remote device IP address of the ControlLogix
         to establish a connection to.
+      - Notation can be IP Adress alone, "192.168.100.100" and slot 0 will be assumed.
+        Alternatively the slot can be provided as IPAddress/SlotNumber, "192.168.100.100/3".
     default: inventory_hostname
     vars:
       - name: ansible_host
-  backplane:
-    type: str
-    description:
-      - Specifies the Backplane to connect to
-    ini:
-      - section: defaults
-        key: ansible_logix_backplane
-    env:
-      - name: ANSIBLE_LOGIX_backplane
-    vars:
-      - name: ansible_logix_slot
-  slot:
+  persistent_connect_timeout:
     type: int
     description:
-      - Specifies the port on the Backplane Slot to connect to.
+      - Configures, in seconds, the amount of time to wait when trying to
+        initially establish a persistent connection.  If this value expires
+        before the connection to the remote device is completed, the connection
+        will fail.
+    default: 30
     ini:
-      - section: defaults
-        key: ansible_logix_slot
+      - section: persistent_connection
+        key: connect_timeout
     env:
-      - name: ANSIBLE_LOGIX_SLOT
+      - name: ANSIBLE_PERSISTENT_CONNECT_TIMEOUT
     vars:
-      - name: ansible_logix_slot
+      - name: ansible_connect_timeout
+  persistent_command_timeout:
+    type: int
+    description:
+      - Configures, in seconds, the amount of time to wait for a command to
+        return from the remote device.  If this timer is exceeded before the
+        command returns, the connection plugin will raise an exception and
+        close.
+    default: 30
+    ini:
+      - section: persistent_connection
+        key: command_timeout
+    env:
+      - name: ANSIBLE_PERSISTENT_COMMAND_TIMEOUT
+    vars:
+      - name: ansible_command_timeout
+  persistent_log_messages:
+    type: boolean
+    description:
+      - This flag will enable logging the command executed and response received from
+        target device in the ansible log file. For this option to work 'log_path' ansible
+        configuration option is required to be set to a file path with write access.
+      - Be sure to fully understand the security implications of enabling this
+        option as it could create a security vulnerability by logging sensitive information in log file.
+    default: False
+    ini:
+      - section: persistent_connection
+        key: log_messages
+    env:
+      - name: ANSIBLE_PERSISTENT_LOG_MESSAGES
+    vars:
+      - name: ansible_persistent_log_messages
 """
 
 from io import BytesIO
@@ -69,7 +95,6 @@ class Connection(NetworkConnectionBase):
     def __init__(self, play_context, new_stdin, *args, **kwargs):
         super(Connection, self).__init__(play_context, new_stdin, *args, **kwargs)
 
-        self.plc = None
         if not HAS_PYCOMM3:
             raise AnsibleConnectionFailure(
                 "Error> python pycomm3 module required for industrial.logix.logix connection plugin"
@@ -79,8 +104,12 @@ class Connection(NetworkConnectionBase):
         if not self.connected:
             host = self.get_option('host')
 
-            self.plc = LogixDriver(host)
-            self._sub_plugin = {'name': 'plc', 'obj': self.plc}
+            plc = LogixDriver(host)
+            self._sub_plugin = {
+                'type': 'network',
+                'name': 'logix',
+                'obj': plc
+            }
             self._connected = True
 
             self.queue_message(
@@ -88,38 +117,47 @@ class Connection(NetworkConnectionBase):
                 "Connection to ControlLogix established: %s" % host
             )
 
-    def call_logix_action(self, logix_module, options):
+    def call_logix_action(self, attribute, options={}):
         """
         Imports a module and executes a target module dynamically using the
         persistent LogixDriver instance.
 
-            :arg logix_module: str, the fully qualified module.method name to invoke
+            :arg attribute: str, the pycomm3.LogixDriver attribute to call
             :arg options: dict, the dict of options to pass to the API call
 
             :returns: dict, return value(s) from the api call
         """
-        if not self.connected:
-            self._connect()
         try:
-            module_name, method_name = logix_module.rsplit('.', 1)
-            self.queue_message('vvv', 'Action method to be imported from module: ' + module_name)
-            self.queue_message('vvv', 'Action method name is: ' + method_name)
-            mod = importlib.import_module(module_name)
-            func_ptr = getattr(mod, method_name)  # Convert action to actual function pointer
-            func_call = 'func_ptr(' + options + ')'
+            self.queue_message('vvv', 'Action method to be imported from module: ' + attribute)
+            self.queue_message('vvv', 'Action method name is: ' + attribute)
+
+            with LogixDriver(self.get_option('host')) as plc:
+
+                if hasattr(plc, attribute):
+                    func_ptr = getattr(plc, attribute)  # Convert action to actual function pointer
+                else:
+                    raise AnsibleConnectionFailure("Error> Attempt was made execute an invalid pycomm3.ControlLogix attribute")
+                if callable(func_ptr):
+                    if options:
+                        func_call = 'func_ptr(' + options + ')'
+                    else:
+                        func_call = 'func_ptr()'
+                else:
+                    # This is an attribute, not a function/method
+                    func_call = "plc.%s" % attribute
 
             # Execute requested 'action'
             ret_obj = eval(func_call)
-            #ret_obj['ansible_facts'] = self.plc.facts #FIXME - facts?
+            #ret_obj['ansible_facts'] = plc.facts #FIXME - facts?
             return ret_obj
         except ImportError as e:
-            raise AnsibleConnectionFailure('Error> action belongs to a module that is not found!', logix_module, e)
+            raise AnsibleConnectionFailure('Error> action belongs to a module that is not found!', attribute, e)
         except AttributeError as e:
-            raise AnsibleConnectionFailure('Error> invalid action was specified, method not found in module!', logix_module, e)
+            raise AnsibleConnectionFailure('Error> invalid action was specified, method not found in module!', attribute, e)
         except TypeError:
             raise AnsibleConnectionFailure(
                 'Error> action does not have the right set of arguments or there is a code bug! Options: ' + options,
-                logix_module,
+                attribute,
                 e
             )
 

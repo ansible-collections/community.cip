@@ -12,3 +12,7 @@ class LogixUtil(object):
         self.module = module
         self.connection = Connection(self.module._socket_path)
 
+    def get_tags(self):
+        return self.connection.call_logix_action("tags")
+
+
