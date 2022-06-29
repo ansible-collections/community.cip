@@ -49,9 +49,8 @@ def main():
 
     logix_util = LogixUtil(module)
 
-    results = logix_util.get_tags()
     module.exit_json(
-        tags=results,
+        tags=logix_util.plc.tags,
         msg="Tag information gathered."
     )
 

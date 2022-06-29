@@ -18,10 +18,5 @@ class LogixUtil(object):
         self.module = module
         self.connection = Connection(self.module._socket_path)
         self.logix_address = self.connection.get_option('host')
-        import q; q.q(self.connection.host)
         self.plc = LogixDriver(self.logix_address)
-
-    def get_tags(self):
-        return self.plc.tags
-
 
