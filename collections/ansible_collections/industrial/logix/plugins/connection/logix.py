@@ -1,7 +1,6 @@
 from __future__ import (absolute_import, division, print_function)
 __metaclass__ = type
 
-#FIXME - I'm not sure we should do the backplane and slot vars
 DOCUMENTATION = """
 ---
 author: Ansible Edge Automation Team <https://github.com/ansible-edge>
@@ -100,65 +99,17 @@ class Connection(NetworkConnectionBase):
                 "Error> python pycomm3 module required for industrial.logix.logix connection plugin"
             )
 
+        self.host = self.get_option('host')
+
     def _connect(self):
         if not self.connected:
             host = self.get_option('host')
 
-            plc = LogixDriver(host)
-            self._sub_plugin = {
-                'type': 'network',
-                'name': 'logix',
-                'obj': plc
-            }
             self._connected = True
 
             self.queue_message(
                 'vvv',
                 "Connection to ControlLogix established: %s" % host
-            )
-
-    def call_logix_action(self, attribute, options={}):
-        """
-        Imports a module and executes a target module dynamically using the
-        persistent LogixDriver instance.
-
-            :arg attribute: str, the pycomm3.LogixDriver attribute to call
-            :arg options: dict, the dict of options to pass to the API call
-
-            :returns: dict, return value(s) from the api call
-        """
-        try:
-            self.queue_message('vvv', 'Action method to be imported from module: ' + attribute)
-            self.queue_message('vvv', 'Action method name is: ' + attribute)
-
-            with LogixDriver(self.get_option('host')) as plc:
-
-                if hasattr(plc, attribute):
-                    func_ptr = getattr(plc, attribute)  # Convert action to actual function pointer
-                else:
-                    raise AnsibleConnectionFailure("Error> Attempt was made execute an invalid pycomm3.ControlLogix attribute")
-                if callable(func_ptr):
-                    if options:
-                        func_call = 'func_ptr(' + options + ')'
-                    else:
-                        func_call = 'func_ptr()'
-                else:
-                    # This is an attribute, not a function/method
-                    func_call = "plc.%s" % attribute
-
-            # Execute requested 'action'
-            ret_obj = eval(func_call)
-            #ret_obj['ansible_facts'] = plc.facts #FIXME - facts?
-            return ret_obj
-        except ImportError as e:
-            raise AnsibleConnectionFailure('Error> action belongs to a module that is not found!', attribute, e)
-        except AttributeError as e:
-            raise AnsibleConnectionFailure('Error> invalid action was specified, method not found in module!', attribute, e)
-        except TypeError:
-            raise AnsibleConnectionFailure(
-                'Error> action does not have the right set of arguments or there is a code bug! Options: ' + options,
-                attribute,
-                e
             )
 
     def close(self):
