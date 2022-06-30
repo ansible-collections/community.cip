@@ -75,12 +75,16 @@ def main():
     results['previous_value'] = ""
     if tag_name in logix_util.plc.tags:
         results['previous_value'] = logix_util.plc.read(tag_name).value
-    if str(logix_util.plc.read(tag_name).value).lower() == tag_value.lower(): # Gross
-        # Checking all this is not needed right now, but once implemented as a module(?) we will use this to check idepotence
-        print(f"Requested tag value of {tag_value} matches current value in controller")
+    else:
+        module.fail_json(msg="ERROR: Tag %s not found" % tag_name)
+
+    if str(logix_util.plc.read(tag_name).value).lower() == tag_value.lower():
+        # FIXME - do this check .... better?
+        module.exit_json(msg="Tag already set, no change needed", changed=False)
 
     # FIXME - Need to clean this up later, but it's fine for PoC
     plc_data_type = logix_util.plc.read(tag_name).type
+
     if plc_data_type == 'BOOL':
         tag_value = tag_value.lower() in ['true', '1', 't', 'y', 'yes']
     elif plc_data_type == 'REAL' or plc_data_type == 'FLOAT':
@@ -88,14 +92,16 @@ def main():
     elif plc_data_type == 'DINT' or plc_data_type == 'DINT':
         tag_value = int(tag_value)
 
+    write_result = logix_util.plc.write((tag_name, tag_value))
 
-    write_result = plc.write(tag_name, tag_value)
     if not bool(write_result):
         logix_util.module.fail_json('Failed to write tag')
 
     results['data_type'] = plc_data_type
     results['value'] = tag_value
     results['write_result'] = write_result
+
+    module.exit_json(msg="Updated tag", changed=True, results=results)
 
 if __name__ == "__main__":
     main()
