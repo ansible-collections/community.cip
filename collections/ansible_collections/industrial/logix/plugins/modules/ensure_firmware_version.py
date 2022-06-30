@@ -16,7 +16,7 @@ ANSIBLE_METADATA = {
 
 DOCUMENTATION = """
 ---
-module: ensure_tag
+module: ensure_firmware_version
 short_description: Ensure a tag has a specific value
 description:
     - Ensure a tag has a specific value

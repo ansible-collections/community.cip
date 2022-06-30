@@ -1,0 +1,15 @@
+---
+- name: Test some industrial.logix stuff
+  hosts: plc
+  gather_facts: false
+  tasks:
+#   - name: get tag information
+#     industrial.logix.tag_info:
+#     register: tag_info_out
+
+    - name: set a tag
+      industrial.logix.ensure_tag:
+        name: "modified_by_ansible"
+        value: True
+
+

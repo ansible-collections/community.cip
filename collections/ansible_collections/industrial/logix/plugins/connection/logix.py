@@ -1,3 +1,6 @@
+# Copyright: Red Hat Inc.
+# MIT (see COPYING or https://opensource.org/licenses/MIT)
+
 from __future__ import (absolute_import, division, print_function)
 __metaclass__ = type
 
