@@ -17,34 +17,24 @@ ANSIBLE_METADATA = {
 DOCUMENTATION = """
 ---
 module: ensure_firmware_version
-short_description: Ensure a tag has a specific value
+short_description: Ensure firmware is a specific version or fail
 description:
-    - Ensure a tag has a specific value
+    - Ensure firmware is a specific version or fail
 author:
 - Adam Miller (@maxamillion)
 options:
-  name:
+  version:
     description:
-      - Name of the tag to target
-    required: true
-    type: str
-  value:
-    description:
-      - Value to ensure the tag is set to.
-      - This value is always a string in the playbook and will by typecast
-        accordingly 
+      - Firmware version to validate
     required: true
     type: str
 """
 
 EXAMPLES = """
-- name: Ensure a tag is set
-  industrial.logix.ensure_tag:
-    name: LED
-    value: True
-  register: list_tags_out
+- name: check firmware version
+  industrial.logix.ensure_firmware_version:
+    version: "1.2.3"
 
-- debug: var=list_tags_out
 """
 
 
@@ -59,8 +49,7 @@ from ansible_collections.industrial.logix.plugins.module_utils.logix import Logi
 def main():
 
     argspec = dict(
-        name=dict(required=True, type="str"),
-        value=dict(required=True, type="str"),
+        version=dict(required=True, type="str"),
     )
 
     module = AnsibleModule(
@@ -68,40 +57,17 @@ def main():
     )
 
     logix_util = LogixUtil(module)
-    tag_name = module.params['name']
-    tag_value = module.params['value']
 
-    results = {}
-    results['previous_value'] = ""
-    if tag_name in logix_util.plc.tags:
-        results['previous_value'] = logix_util.plc.read(tag_name).value
-    else:
-        module.fail_json(msg="ERROR: Tag %s not found" % tag_name)
+    if logix_util.plc.revision_major != module.params['version']:
+        module.fail_json(
+            msg="Version %s not confirmed. Version %s found instead." % (
+                module.params['version'], logix_util.plx.revision_major
+            )
+        )
 
-    if str(logix_util.plc.read(tag_name).value).lower() == tag_value.lower():
-        # FIXME - do this check .... better?
-        module.exit_json(msg="Tag already set, no change needed", changed=False)
-
-    # FIXME - Need to clean this up later, but it's fine for PoC
-    plc_data_type = logix_util.plc.read(tag_name).type
-
-    if plc_data_type == 'BOOL':
-        tag_value = tag_value.lower() in ['true', '1', 't', 'y', 'yes']
-    elif plc_data_type == 'REAL' or plc_data_type == 'FLOAT':
-        tag_value = float(tag_value)
-    elif plc_data_type == 'DINT' or plc_data_type == 'DINT':
-        tag_value = int(tag_value)
-
-    write_result = logix_util.plc.write((tag_name, tag_value))
-
-    if not bool(write_result):
-        logix_util.module.fail_json('Failed to write tag')
-
-    results['data_type'] = plc_data_type
-    results['value'] = tag_value
-    results['write_result'] = write_result
-
-    module.exit_json(msg="Updated tag", changed=True, results=results)
+    module.exit_json(
+        msg="Version %s confirmed." % module.params['version'], changed=False
+    )
 
 if __name__ == "__main__":
     main()
