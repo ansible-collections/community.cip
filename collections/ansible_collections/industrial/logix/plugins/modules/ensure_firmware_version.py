@@ -27,13 +27,13 @@ options:
     description:
       - Firmware version to validate
     required: true
-    type: str
+    type: int
 """
 
 EXAMPLES = """
 - name: check firmware version
   industrial.logix.ensure_firmware_version:
-    version: "1.2.3"
+    version: 33
 
 """
 
@@ -49,7 +49,7 @@ from ansible_collections.industrial.logix.plugins.module_utils.logix import Logi
 def main():
 
     argspec = dict(
-        version=dict(required=True, type="str"),
+        version=dict(required=True, type="int"),
     )
 
     module = AnsibleModule(
@@ -61,7 +61,7 @@ def main():
     if logix_util.plc.revision_major != module.params['version']:
         module.fail_json(
             msg="Version %s not confirmed. Version %s found instead." % (
-                module.params['version'], logix_util.plx.revision_major
+                module.params['version'], logix_util.plc.revision_major
             )
         )
 
