@@ -53,7 +53,7 @@
         executable: /bin/bash
       register: firmware_ver
       changed_when: False
-      failed_when: firmware_ver.rc != 0
+        #failed_when: firmware_ver.rc != 0
 
     - name: Ensure tag modified by ansible is set to true
       ansible.builtin.shell:
