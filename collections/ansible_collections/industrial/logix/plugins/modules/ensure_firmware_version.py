@@ -23,17 +23,23 @@ description:
 author:
 - Adam Miller (@maxamillion)
 options:
-  version:
+  major_version:
     description:
-      - Firmware version to validate
+      - Major firmware version to validate
     required: true
+    type: int
+  minor_version:
+    description:
+      - Minor firmware version to validate
+    required: false
     type: int
 """
 
 EXAMPLES = """
 - name: check firmware version
   industrial.logix.ensure_firmware_version:
-    version: 33
+    major_version: 33
+    minor_version: 01
 
 """
 
@@ -48,8 +54,13 @@ from ansible_collections.industrial.logix.plugins.module_utils.logix import Logi
 
 def main():
 
+    # Instead of needing two args, I would love if we could take a single 
+    # major.minorand automagically figure out `major` or `major.*` or something
+    # to signify that we are want to verify major version
+     
     argspec = dict(
-        version=dict(required=True, type="int"),
+        major_version=dict(required=True, type="int"),
+        minor_version=dict(required=False, type="int")
     )
 
     module = AnsibleModule(
@@ -58,16 +69,39 @@ def main():
 
     logix_util = LogixUtil(module)
 
-    if logix_util.plc.revision_major != module.params['version']:
+    with logix_util.plc as plc:
+        plc_version = plc.get_plc_info()['revision']
+
+    # check major revision
+    if plc_version['major'] != module.params['major_version']:
         module.fail_json(
-            msg="Version %s not confirmed. Version %s found instead." % (
-                module.params['version'], logix_util.plc.revision_major
+            msg="Major version %s not confirmed. Major version %s found instead." % (
+                module.params['major_version'], plc_version['major']
             )
         )
 
-    module.exit_json(
-        msg="Version %s confirmed." % module.params['version'], changed=False
-    )
+    # Do we need to check for minor version?
+    if "minor_version" in module.params:
+        # Check minor version
+        if plc_version['minor'] != module.params['minor_version']:
+            module.fail_json(
+            msg="Major version %s confirmed but minor version %s not confirmed. Minor version %s found instead." % (
+                module.params['major_version'], module.params['minor_version'], plc_version['minor']
+            )
+        )
+
+
+    if "minor_version" in module.params:
+        module.exit_json(
+            msg="Version %s.%s confirmed." % (
+                module.params['major_version'], module.params['minor_version']
+            ),
+            changed=False
+        )
+    else:
+        module.exit_json(
+            msg="Major version %s confirmed." % module.params['major_version'], changed=False
+        )
 
 if __name__ == "__main__":
     main()
