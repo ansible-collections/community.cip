@@ -17,7 +17,7 @@ tag_value = sys.argv[3]
 #create_if_nonexistant = sys.argv[5].lower() in ['True', 'true', 1]
 
 with LogixDriver(module_path) as plc:
-  if tag_name in plc.tags:
+  if tag_name in plc.tags_json:
     print(f'Previous tag value: {plc.read(tag_name).value}')
     if str(plc.read(tag_name).value).lower() == tag_value.lower(): # Gross
         # Checking all this is not needed right now, but once implemented as a module(?) we will use this to check idepotence
