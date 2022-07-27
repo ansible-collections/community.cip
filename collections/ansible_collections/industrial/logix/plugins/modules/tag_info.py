@@ -48,9 +48,6 @@ def main():
     )
 
     logix_util = LogixUtil(module)
-    import q; q.q(logix_util.plc.tags_json)
-    import q; q.q("NEW PLC")
-    import q; q.q("NEW PLC")
 
     module.exit_json(
         tags=logix_util.plc.tags_json,
