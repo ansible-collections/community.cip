@@ -73,7 +73,11 @@ def main():
 
     results = {}
     results['previous_value'] = ""
-    if tag_name in logix_util.plc.tags:
+
+    #open connection to read tag values
+    logix_util.plc.open()
+
+    if tag_name in logix_util.plc.tags_json:
         results['previous_value'] = logix_util.plc.read(tag_name).value
     else:
         module.fail_json(msg="ERROR: Tag %s not found" % tag_name)

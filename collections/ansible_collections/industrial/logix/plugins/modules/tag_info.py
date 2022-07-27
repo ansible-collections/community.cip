@@ -50,7 +50,7 @@ def main():
     logix_util = LogixUtil(module)
 
     module.exit_json(
-        tags=logix_util.plc.tags,
+        tags=logix_util.plc.tags_json,
         msg="Tag information gathered."
     )
 
