@@ -21,13 +21,14 @@ short_description: Ensure tags have a specific value
 description:
     - Ensure tags have a specific value
 author:
-- Adam Miller (@maxamillion)
+- Matthew Sandoval (@matoval)
 options:
   tags:
     description:
       - List of tags with name and value
     required: true
     type: list
+    elements: dict
     suboptions:
       name:
         description:
