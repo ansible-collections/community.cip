@@ -28,18 +28,19 @@ options:
       - List of tags with name and value
     required: true
     type: list
-  name:
-    description:
-      - Name of the tag to target
-    required: true
-    type: str
-  value:
-    description:
-      - Value to ensure the tag is set to.
-      - This value is always a string in the playbook and will by typecast
-        accordingly 
-    required: true
-    type: str
+    suboptions:
+      name:
+        description:
+          - Name of the tag to target
+        required: true
+        type: str
+      value:
+        description:
+          - Value to ensure the tag is set to.
+          - This value is always a string in the playbook and will by typecast
+            accordingly 
+        required: true
+        type: str
 """
 
 EXAMPLES = """
@@ -60,14 +61,13 @@ from ansible_collections.industrial.logix.plugins.module_utils.logix import Logi
 
 def main():
 
+    subopts = dict(
+    name=dict(required=True, type="str"),
+    value=dict(requied=True, type="str"),
+    )
+
     argspec = dict(
-        tags=dict(
-            type="list",
-            options=dict(
-            name=dict(required=True, type="str"),
-            value=dict(required=True, type="str"),
-            )
-        )
+        tags=dict(type="list", options=subopts, elements="dict"),
     )
 
     module = AnsibleModule(
