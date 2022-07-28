@@ -1,13 +1,13 @@
 ---
-- name: Test some industrial.logix stuff
+- name: Test tags have a specific value
   hosts: plc
   gather_facts: false
   tasks:
-  - name: set a tag
+  - name: Ensure tags have a specific value
     industrial.logix.ensure_tags:
       tags:
         - name: "modified_by_ansible"
-          value: "Flase"
+          value: "True"
         - name: "M_PI"
           value: "3.1415927410125732"
         - name: "Toggle"

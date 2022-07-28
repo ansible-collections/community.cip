@@ -5,7 +5,6 @@
 # MIT (see COPYING or https://opensource.org/licenses/MIT)
 
 from __future__ import absolute_import, division, print_function
-import imp
 
 __metaclass__ = type
 
@@ -17,10 +16,10 @@ ANSIBLE_METADATA = {
 
 DOCUMENTATION = """
 ---
-module: ensure_tag
-short_description: Ensure a tag has a specific value
+module: ensure_tags
+short_description: Ensure tags have a specific value
 description:
-    - Ensure a tag has a specific value
+    - Ensure tags have a specific value
 author:
 - Adam Miller (@maxamillion)
 options:
@@ -45,20 +44,17 @@ options:
 
 EXAMPLES = """
 - name: Ensure a tag is set
-  industrial.logix.ensure_tag:
-    name: LED
-    value: True
+  industrial.logix.ensure_tags:
+    tags:
+      - name: LED
+        value: True
   register: list_tags_out
 
 - debug: var=list_tags_out
 """
 
 
-import os
-import traceback
-
 from ansible.module_utils.basic import AnsibleModule
-from ansible.module_utils._text import to_native, to_text
 from ansible_collections.industrial.logix.plugins.module_utils.logix import LogixUtil
 
 
@@ -116,7 +112,7 @@ def main():
         if tags_results[tag_name]['write_result']:
             has_changed = True
 
-    module.exit_json(msg="Updated tag", changed=has_changed, ansible_module_results=tags_results)
+    module.exit_json(msg="Tags values", changed=has_changed, ansible_module_results=tags_results)
 
 if __name__ == "__main__":
     main()
