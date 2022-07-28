@@ -1,0 +1,20 @@
+---
+- name: Test some industrial.logix stuff
+  hosts: plc
+  gather_facts: false
+  tasks:
+  - name: set a tag
+    industrial.logix.ensure_tags:
+      tags:
+        - name: "modified_by_ansible"
+          value: "Flase"
+        - name: "M_PI"
+          value: "3.1415927410125732"
+        - name: "Toggle"
+          value: "False"
+        - name: "ttus"
+          value: "2022"
+    register: list_tags_out
+
+  - debug: var=list_tags_out
+
