@@ -1,0 +1,20 @@
+---
+- name: Test tags have a specific value
+  hosts: plc
+  gather_facts: false
+  tasks:
+  - name: Ensure tags have a specific value
+    industrial.logix.ensure_tags:
+      tags:
+        - name: "modified_by_ansible"
+          value: "True"
+        - name: "M_PI"
+          value: "3.1415927410125732"
+        - name: "Toggle"
+          value: "False"
+        - name: "ttus"
+          value: "2022"
+    register: list_tags_out
+
+  - debug: var=list_tags_out
+
