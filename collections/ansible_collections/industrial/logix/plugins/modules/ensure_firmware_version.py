@@ -61,8 +61,7 @@ def main():
 
     logix_util = LogixUtil(module)
 
-    with logix_util.plc as plc:
-        plc_revision = plc.get_plc_info()['revision']
+    plc_revision = logix_util.plc.get_plc_info()['revision']
 
     # The best I can tell, all ControlLogix controllers revisions are composed
     # of a two digit number signifying the "Major" revision, followed by a dot,
@@ -92,6 +91,13 @@ def main():
     # Parse the revision information given to us. If it contains a period, that
     # implies it is in the major.minor form
     if '.' in module.params['revision']:
+
+        # Fail if more than a single decimal is provided
+        if module.params['revision'].count('.') > 1:
+            module.fail_json(
+                msg="Controller revision not specified properly. Tried to parse revision `%s` in form Major.Minor, but more then one decimal was provided" % 
+                ( module.params['revision'] )
+            )
         
         # Determine the index of said period, and slice the revision string
         dot_index = module.params['revision'].index('.')
