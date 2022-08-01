@@ -1,0 +1,11 @@
+---
+- name: Test firmware is at a specific version
+  hosts: plc
+  gather_facts: false
+  tasks:
+  - name: Ensure firmware is at a specific version
+    industrial.logix.ensure_firmware_version:
+      revision: "{{ hostvars[inventory_hostname]['revision'] }}"
+    register: ensure_firmware_version_out
+
+  - debug: var=ensure_firmware_version_out
