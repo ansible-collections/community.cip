@@ -63,8 +63,8 @@ from ansible_collections.industrial.logix.plugins.module_utils.logix import Logi
 def main():
 
     subopts = dict(
-    name=dict(required=True, type="str"),
-    value=dict(requied=True, type="str"),
+        name=dict(required=True, type="str"),
+        value=dict(requied=True, type="str"),
     )
 
     argspec = dict(
