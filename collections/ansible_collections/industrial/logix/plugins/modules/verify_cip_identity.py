@@ -246,15 +246,17 @@ def main():
               module.params['cip_identity']['status'][value] = False
           elif module.params['cip_identity']['status'][value] == 'True':
               module.params['cip_identity']['status'][value] = True
-
-      if status == module.params['cip_identity']['status']:
-          cip_identity_results.append('status')
-      else:
-          module.fail_json(
-              msg="Status %s does not match the Status %s from this PLC." % (
-                  module.params['cip_identity']['status'], status
+              
+      for status_key in module.params['cip_identity']['status']:
+        if module.params['cip_identity']['status'][status_key]:
+          if status[status_key] == module.params['cip_identity']['status'][status_key]:
+              cip_identity_results.append("status-%s" % status_key)
+          else:
+              module.fail_json(
+                  msg="Status %s does not match the Status %s from this PLC." % (
+                      module.params['cip_identity']['status'][status_key], status[status_key]
+                  )
               )
-          )
 
     if module.params['cip_identity']['serial_number']:
       if logix_util.plc.info['serial'] == module.params['cip_identity']['serial_number']:
