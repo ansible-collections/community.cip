@@ -5,6 +5,7 @@
 # MIT (see COPYING or https://opensource.org/licenses/MIT)
 
 from __future__ import absolute_import, division, print_function
+from asyncio import FastChildWatcher
 
 __metaclass__ = type
 
@@ -33,89 +34,89 @@ options:
       vendor_id:
         description:
           - Value is the vendor id of the plc.
-        required: true
+        required: false
         type: int
       device_type:
         description:
           - Value is the device type of the plc.
-        required: true
+        required: false
         type: int
       product_code:
         description:
           - Value is the product code of the plc.
-        required: true
+        required: false
         type: int
       revision:
         description:
           - firmware revision to validate in the form XX.YYY
-        required: true
+        required: false
         type: float
       status:
         description:
           - Value to ensure the tag is set to.
-        required: true
+        required: false
         type: dict
         elements: dict
         suboptions:
           owned:
             description:
               - Value indicating the plc has an owner.
-            required: true
+            required: false
             type: bool
           configured:
             description:
               - Value indicating if the plc is configured different than the "out-of-box" default.
-            required: true
+            required: false
             type: bool
           mode:
             description:
               - Value indicating the current mode of the plc.
-            required: true
+            required: false
             type: str
           minor_recoverable_fault:
             description:
               - Value indicating if there is a minor recoverable fault.
-            required: true
+            required: false
             type: bool
           minor_unrecoverable_fault:
             description:
               - Value indicating if there is a minor unrecoverable fault.
-            required: true
+            required: false
             type: bool
           major_recoverable_fault:
             description:
               - Value indicating if there is a major recoverable fault.
-            required: true
+            required: false
             type: bool
           major_unrecoverable_fault:
             description:
               - Value indicating if there is a major unrecoverable fault.
-            required: true
+            required: false
             type: bool
           keyswitch:
             description:
               - Value indicating current keyswitch mode.
-            required: true
+            required: false
             type: str
           transitioning:
             description:
               - Value indicating if status is currently transitioning.
-            required: true
+            required: false
             type: bool
           debug:
             description:
               - Value indicating if debug mode is active.
-            required: true
+            required: false
             type: bool
       serial_number:
         description:
           - Value is the serial number of the plc.
-        required: true
+        required: false
         type: str
       product_name:
         description:
           - Value is the product name of the plc.
-        required: true
+        required: false
         type: str
 """
 
@@ -153,26 +154,26 @@ from ansible_collections.industrial.logix.plugins.module_utils.logix import Logi
 def main():
 
     statusopt = dict(
-        owned = dict(required=True, type="bool"),
-        configured = dict(required=True, type="bool"),
-        mode = dict(required=True, type="str"),
-        minor_recoverable_fault = dict(required=True, type="bool"),
-        minor_unrecoverable_fault = dict(required=True, type="bool"),
-        major_recoverable_fault = dict(required=True, type="bool"),
-        major_unrecoverable_fault = dict(required=True, type="bool"),
-        keyswitch = dict(required=True, type="str"),
-        transitioning = dict(required=True, type="bool"),
-        debug = dict(required=True, type="bool"),
+        owned = dict(required=False, type="bool"),
+        configured = dict(required=False, type="bool"),
+        mode = dict(required=False, type="str"),
+        minor_recoverable_fault = dict(required=False, type="bool"),
+        minor_unrecoverable_fault = dict(required=False, type="bool"),
+        major_recoverable_fault = dict(required=False, type="bool"),
+        major_unrecoverable_fault = dict(required=False, type="bool"),
+        keyswitch = dict(required=False, type="str"),
+        transitioning = dict(required=False, type="bool"),
+        debug = dict(required=False, type="bool"),
     )
 
     subopts = dict(
-        vendor_id = dict(required=True, type="int"),
-        device_type = dict(requied=True, type="int"),
-        product_code = dict(requied=True, type="int"),
-        revision = dict(requied=True, type="str"),
-        status = dict(requied=True, type="dict", options=statusopt),
-        serial_number = dict(requied=True, type="str"),
-        product_name = dict(requied=True, type="str"),
+        vendor_id = dict(required=False, type="int"),
+        device_type = dict(requied=False, type="int"),
+        product_code = dict(requied=False, type="int"),
+        revision = dict(requied=False, type="str"),
+        status = dict(requied=False, type="dict", options=statusopt),
+        serial_number = dict(requied=False, type="str"),
+        product_name = dict(requied=False, type="str"),
     )
     
     argspec = dict(
@@ -187,81 +188,93 @@ def main():
     
     cip_identity_results = []
 
-    if logix_util.plc.info['vendor'] == logix_util.cip.VENDORS[module.params['cip_identity']['vendor_id']]:
-        cip_identity_results.append('vendor_id')
-    else:
-        module.fail_json(
-            msg="Vendor id %s does not match the vendor id %s from this PLC." % (
-                module.params['cip_identity']['vendor_id'], logix_util.cip.VENDORS.get(logix_util.plc.info['vendor'], "UNKNOWN")
-            )
-        )
+    if not module.params['cip_identity']:
+      module.fail_json(
+        msg="No CIP identity properties provided."
+      )
 
-    if logix_util.plc.info['product_type'] == logix_util.cip.PRODUCT_TYPES[module.params['cip_identity']['device_type']]:
-        cip_identity_results.append('device_type')
-    else:
-        module.fail_json(
-            msg="Device type %s does not match the device type %s from this PLC." % (
-                module.params['cip_identity']['device_type'], logix_util.cip.PRODUCT_TYPES.get(logix_util.plc.info['product_type'], "UNKNOWN")
-            )
-        )
+    if module.params['cip_identity']['vendor_id']:
+      if logix_util.plc.info['vendor'] == logix_util.cip.VENDORS[module.params['cip_identity']['vendor_id']]:
+          cip_identity_results.append('vendor_id')
+      else:
+          module.fail_json(
+              msg="Vendor id %s does not match the vendor id %s from this PLC." % (
+                  module.params['cip_identity']['vendor_id'], logix_util.cip.VENDORS.get(logix_util.plc.info['vendor'], "UNKNOWN")
+              )
+          )
 
-    if logix_util.plc.info['product_code'] == module.params['cip_identity']['product_code']:
-        cip_identity_results.append('product_code')
-    else:
-        module.fail_json(
-            msg="Product code %s does not match the product code %s from this PLC." % (
-                module.params['cip_identity']['product_code'], logix_util.plc.info['product_code']
-            )
-        )
+    if module.params['cip_identity']['device_type']:
+      if logix_util.plc.info['product_type'] == logix_util.cip.PRODUCT_TYPES[module.params['cip_identity']['device_type']]:
+          cip_identity_results.append('device_type')
+      else:
+          module.fail_json(
+              msg="Device type %s does not match the device type %s from this PLC." % (
+                  module.params['cip_identity']['device_type'], logix_util.cip.PRODUCT_TYPES.get(logix_util.plc.info['product_type'], "UNKNOWN")
+              )
+          )
 
-    dot_index = module.params['cip_identity']['revision'].index('.')
-    major_slice = module.params['cip_identity']['revision'][:dot_index]
-    minor_slice = module.params['cip_identity']['revision'][dot_index + 1:]
+    if module.params['cip_identity']['product_code']:
+      if logix_util.plc.info['product_code'] == module.params['cip_identity']['product_code']:
+          cip_identity_results.append('product_code')
+      else:
+          module.fail_json(
+              msg="Product code %s does not match the product code %s from this PLC." % (
+                  module.params['cip_identity']['product_code'], logix_util.plc.info['product_code']
+              )
+          )
 
-    if logix_util.plc.info['revision']['major'] == int(major_slice) and logix_util.plc.info['revision']['minor'] == int(minor_slice):
-        cip_identity_results.append('revision')
-    else:
-        module.fail_json(
-            msg="Revision %s does not match the revision %s from this PLC." % (
-                module.params['cip_identity']['revision'], ("%s.%s" % (logix_util.plc.info['revision']['major'], str(logix_util.plc.info['revision']['minor']).zfill(3)))
-            )
-        )
+    if module.params['cip_identity']['revision']:
+      dot_index = module.params['cip_identity']['revision'].index('.')
+      major_slice = module.params['cip_identity']['revision'][:dot_index]
+      minor_slice = module.params['cip_identity']['revision'][dot_index + 1:]
 
-    binary_status = logix_util.parse_status_to_binary(logix_util.plc.info['status'])
-    status = logix_util.parse_status_to_text(binary_status)
+      if logix_util.plc.info['revision']['major'] == int(major_slice) and logix_util.plc.info['revision']['minor'] == int(minor_slice):
+          cip_identity_results.append('revision')
+      else:
+          module.fail_json(
+              msg="Revision %s does not match the revision %s from this PLC." % (
+                  module.params['cip_identity']['revision'], ("%s.%s" % (logix_util.plc.info['revision']['major'], str(logix_util.plc.info['revision']['minor']).zfill(3)))
+              )
+          )
 
-    for value in module.params['cip_identity']['status']:
-        if module.params['cip_identity']['status'][value] == 'False':
-            module.params['cip_identity']['status'][value] = False
-        elif module.params['cip_identity']['status'][value] == 'True':
-            module.params['cip_identity']['status'][value] = True
+    if module.params['cip_identity']['status']:
+      binary_status = logix_util.parse_status_to_binary(logix_util.plc.info['status'])
+      status = logix_util.parse_status_to_text(binary_status)
 
-    if status == module.params['cip_identity']['status']:
-        cip_identity_results.append('status')
-    else:
-        module.fail_json(
-            msg="Status %s does not match the Status %s from this PLC." % (
-                module.params['cip_identity']['status'], status
-            )
-        )
+      for value in module.params['cip_identity']['status']:
+          if module.params['cip_identity']['status'][value] == 'False':
+              module.params['cip_identity']['status'][value] = False
+          elif module.params['cip_identity']['status'][value] == 'True':
+              module.params['cip_identity']['status'][value] = True
 
-    if logix_util.plc.info['serial'] == module.params['cip_identity']['serial_number']:
-        cip_identity_results.append('serial_number')
-    else:
-        module.fail_json(
-            msg="Serial number %s does not match the serial number %s from this PLC." % (
-                module.params['cip_identity']['serial_number'], logix_util.plc.info['serial']
-            )
-        )
+      if status == module.params['cip_identity']['status']:
+          cip_identity_results.append('status')
+      else:
+          module.fail_json(
+              msg="Status %s does not match the Status %s from this PLC." % (
+                  module.params['cip_identity']['status'], status
+              )
+          )
+
+    if module.params['cip_identity']['serial_number']:
+      if logix_util.plc.info['serial'] == module.params['cip_identity']['serial_number']:
+          cip_identity_results.append('serial_number')
+      else:
+          module.fail_json(
+              msg="Serial number %s does not match the serial number %s from this PLC." % (
+                  module.params['cip_identity']['serial_number'], logix_util.plc.info['serial']
+              )
+          )
     
-    if logix_util.plc.info['product_name'] == module.params['cip_identity']['product_name']:
-        cip_identity_results.append('product_name')
-    else:
-        module.fail_json(
-            msg="Product name %s does not match the product name %s from this PLC." % (
-                module.params['cip_identity']['product_name'], logix_util.plc.info['product_name']
-            )
-        )
+    if module.params['cip_identity']['product_name']:
+      if logix_util.plc.info['product_name'] == module.params['cip_identity']['product_name']:
+          cip_identity_results.append('product_name')
+      else:
+          module.fail_json(
+              msg="Product name %s does not match the product name %s from this PLC." % (
+                  module.params['cip_identity']['product_name'], logix_util.plc.info['product_name']
+              )
+          )
 
     module.exit_json(
         ansible_module_results="Verified %s properties match the data from this PLC." % (', '.join(cip_identity_results)),
