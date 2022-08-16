@@ -253,8 +253,8 @@ def main():
               cip_identity_results.append("status-%s" % status_key)
           else:
               module.fail_json(
-                  msg="Status %s does not match the Status %s from this PLC." % (
-                      module.params['cip_identity']['status'][status_key], status[status_key]
+                  msg="Status %s with the value of %s does not match the Status %s with the value %s from this PLC." % (
+                      status_key, module.params['cip_identity']['status'][status_key], status_key, status[status_key]
                   )
               )
 
