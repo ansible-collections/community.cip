@@ -1,8 +1,0 @@
----
-version: 1
-
-build_arg_defaults:
-  EE_BASE_IMAGE: 'registry.redhat.io/ansible-automation-platform-22/ee-29-rhel8:latest'
-
-dependencies:
-  python: requirements.txt
