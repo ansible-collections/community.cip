@@ -58,6 +58,13 @@ EXAMPLES = """
 
 from ansible.module_utils.basic import AnsibleModule
 from ansible_collections.industrial.logix.plugins.module_utils.logix import LogixUtil
+import q
+
+def check_tag_permissions(logix_util, tag_name: str) -> bool:
+    tag_info = logix_util.plc.get_tag_info(tag_name)
+    if tag_info['external_access'] == 'Read/Write':
+        return True
+    return False
 
 
 def main():
@@ -86,11 +93,14 @@ def main():
         tags_results[tag_name] = {}
         tags_results[tag_name]['previous_value'] = ""
 
+        has_read_write_access = check_tag_permissions(logix_util, tag_name)
+        if not has_read_write_access:
+            module.fail_json('Tag %s does not have correct permissions' % tag_name)
+
         if tag_name in logix_util.plc.tags_json:
             tags_results[tag_name]['previous_value'] = logix_util.plc.read(tag_name).value
         else:
-            tags_results[tag_name]['tag_not_found'] = "ERROR: Tag %s not found" % tag_name
-            continue
+            module.fail_json('Tag %s not found' % tag_name)
 
         if str(logix_util.plc.read(tag_name).value).lower() == tag_value.lower():
             # FIXME - do this check .... better?
@@ -106,6 +116,7 @@ def main():
 
         if not bool(write_result):
             logix_util.module.fail_json('Failed to write tag')
+
 
         tags_results[tag_name]['data_type'] = plc_data_type
         tags_results[tag_name]['value'] = tag_value
