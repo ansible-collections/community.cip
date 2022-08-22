@@ -60,18 +60,43 @@ from ansible.module_utils.basic import AnsibleModule
 from ansible_collections.industrial.logix.plugins.module_utils.logix import LogixUtil
 import q
 
-def check_tag_permissions(logix_util, tag_name: str) -> bool:
-    tag_info = logix_util.plc.get_tag_info(tag_name)
-    if tag_info['external_access'] == 'Read/Write':
-        return True
-    return False
+class TagCheck:
+    def __init__(self, logix_util, tag_name):
+        self.logix_util = logix_util
+        self.tag_name = tag_name
+        self.passed = False
+        self.msg = ''
+
+    def check_tag_exists(self):
+        response = self.logix_util.plc.read(self.tag_name)
+        if response.error:
+            raise Exception('Tag %s not found' % self.tag_name)
+
+    def check_tag_permissions(self):
+        tag_info = self.logix_util.plc.get_tag_info(self.tag_name)
+        if tag_info['external_access'] != 'Read/Write':
+            raise Exception('Tag %s does not have correct permissions' % self.tag_name)
+
+    def verify(self):
+        try:
+            self.check_tag_exists()
+            self.check_tag_permissions()
+            return (True, self.msg)
+        except Exception as e:
+            self.msg = e
+            return (self.passed, self.msg)
+
+
+def parse_sequence(sequence):
+    min, max = sequence.replace('[', '').replace(']', '').split(':')
+    return (int(min), int(max))
 
 
 def main():
 
     subopts = dict(
-    name=dict(required=True, type="str"),
-    value=dict(requied=True, type="str"),
+        name=dict(required=True, type="str"),
+        value=dict(requied=True, type="str"),
     )
 
     argspec = dict(
@@ -93,14 +118,17 @@ def main():
         tags_results[tag_name] = {}
         tags_results[tag_name]['previous_value'] = ""
 
-        has_read_write_access = check_tag_permissions(logix_util, tag_name)
-        if not has_read_write_access:
-            module.fail_json('Tag %s does not have correct permissions' % tag_name)
+        if ':' in tag_value:
+            start, end = parse_sequence(tag_value)
+            q.q(start, end)
 
-        if tag_name in logix_util.plc.tags_json:
-            tags_results[tag_name]['previous_value'] = logix_util.plc.read(tag_name).value
-        else:
-            module.fail_json('Tag %s not found' % tag_name)
+        tag_check = TagCheck(logix_util, tag_name)
+        passed, msg = tag_check.verify()
+        if not passed:
+            module.fail_json(msg=msg)
+
+        tags_results[tag_name]['previous_value'] = logix_util.plc.read(tag_name).value
+
 
         if str(logix_util.plc.read(tag_name).value).lower() == tag_value.lower():
             # FIXME - do this check .... better?
