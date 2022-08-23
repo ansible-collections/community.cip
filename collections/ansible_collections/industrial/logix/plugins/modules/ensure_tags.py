@@ -58,69 +58,38 @@ EXAMPLES = """
 
 from ansible.module_utils.basic import AnsibleModule
 from ansible_collections.industrial.logix.plugins.module_utils.logix import LogixUtil
+from ansible_collections.industrial.logix.plugins.module_utils.tag_check import TagCheck
 import q
-
-class TagCheck:
-    def __init__(self, logix_util, tag_name):
-        self.logix_util = logix_util
-        self.tag_name = tag_name
-        self.passed = False
-        self.msg = ''
-
-    def check_tag_exists(self):
-        response = self.logix_util.plc.read(self.tag_name)
-        if response.error:
-            raise Exception('Tag %s not found' % self.tag_name)
-
-    def check_tag_permissions(self):
-        tag_info = self.logix_util.plc.get_tag_info(self.tag_name)
-        if tag_info['external_access'] != 'Read/Write':
-            raise Exception('Tag %s does not have correct permissions' % self.tag_name)
-
-    def verify(self):
-        try:
-            self.check_tag_exists()
-            self.check_tag_permissions()
-            return (True, self.msg)
-        except Exception as e:
-            self.msg = e
-            return (self.passed, self.msg)
-
-
-def parse_sequence(sequence):
-    min, max = sequence.replace('[', '').replace(']', '').split(':')
-    return (int(min), int(max))
 
 
 def main():
 
-    subopts = dict(
+    tag_options = dict(
         name=dict(required=True, type="str"),
         value=dict(requied=True, type="str"),
     )
 
     argspec = dict(
-        tags=dict(type="list", options=subopts, elements="dict"),
+        program=dict(type="str", required=False),
+        tags=dict(type="list", options=tag_options, elements="dict", required=True),
     )
 
-    module = AnsibleModule(
-        argument_spec=argspec,
-    )
+    module = AnsibleModule(argument_spec=argspec)
 
     logix_util = LogixUtil(module)
     tags_results = {}
     has_changed = False
 
     for tag in module.params['tags']:
-        tag_name = tag['name']
+        if module.params['program']:
+            tag_name = 'Program:%s.%s' % (module.params['program'], tag['name'])
+        else:
+            tag_name = tag['name']
+
         tag_value = tag['value']
 
         tags_results[tag_name] = {}
         tags_results[tag_name]['previous_value'] = ""
-
-        if ':' in tag_value:
-            start, end = parse_sequence(tag_value)
-            q.q(start, end)
 
         tag_check = TagCheck(logix_util, tag_name)
         passed, msg = tag_check.verify()
@@ -128,7 +97,6 @@ def main():
             module.fail_json(msg=msg)
 
         tags_results[tag_name]['previous_value'] = logix_util.plc.read(tag_name).value
-
 
         if str(logix_util.plc.read(tag_name).value).lower() == tag_value.lower():
             # FIXME - do this check .... better?
@@ -138,9 +106,9 @@ def main():
         # FIXME - Need to clean this up later, but it's fine for PoC
         plc_data_type = logix_util.plc.read(tag_name).type
 
-        logix_util.typecast_plc_value(plc_data_type, tag_value)
-
-        write_result = logix_util.plc.write((tag_name, tag_value))
+        typecast_tag_value = logix_util.typecast_plc_value(plc_data_type, tag_value)
+        # q.q(type())
+        write_result = logix_util.plc.write(tag_name, typecast_tag_value)
 
         if not bool(write_result):
             logix_util.module.fail_json('Failed to write tag')
