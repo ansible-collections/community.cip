@@ -21,8 +21,13 @@ short_description: Ensure tags have a specific value
 description:
     - Ensure tags have a specific value
 author:
-- Matthew Sandoval (@matoval)
+- Chris Santiago (@resoluteCoder)
 options:
+  program:
+    description:
+      - Name of the program
+    required: false
+    type: str
   tags:
     description:
       - List of tags with name and value
@@ -39,34 +44,39 @@ options:
         description:
           - Value to ensure the tag is set to.
           - This value is always a string in the playbook and will by typecast
-            accordingly 
+            accordingly
         required: true
         type: str
+notes:
+    - some tags will fail due to a value being overwritten after a performing a write
 """
 
 EXAMPLES = """
-- name: Ensure a tag is set
+- name: Ensure tags have a specific value for program - Tag Playground
+  industrial.logix.ensure_tags:
+    program: 'Tag_Playground'
+    tags:
+      - name: "modified_by_ansible"
+        value: False
+
+- name: Ensure tags have a specific value
   industrial.logix.ensure_tags:
     tags:
-      - name: LED
-        value: True
-  register: list_tags_out
-
-- debug: var=list_tags_out
+      - name: "pi"
+        value: 3.14
 """
 
 
 from ansible.module_utils.basic import AnsibleModule
 from ansible_collections.industrial.logix.plugins.module_utils.logix import LogixUtil
-from ansible_collections.industrial.logix.plugins.module_utils.tag_check import TagCheck
-import q
+from ansible_collections.industrial.logix.plugins.module_utils.tags import (TagCheck, TagValueCheck)
 
 
 def main():
 
     tag_options = dict(
         name=dict(required=True, type="str"),
-        value=dict(requied=True, type="str"),
+        value=dict(requied=True, type="raw"),
     )
 
     argspec = dict(
@@ -91,34 +101,39 @@ def main():
         tags_results[tag_name] = {}
         tags_results[tag_name]['previous_value'] = ""
 
+        # checks tag permissions and if exists
         tag_check = TagCheck(logix_util, tag_name)
         passed, msg = tag_check.verify()
         if not passed:
             module.fail_json(msg=msg)
 
-        tags_results[tag_name]['previous_value'] = logix_util.plc.read(tag_name).value
+        # checks tag values
+        plc_tag = logix_util.plc.read(tag_name)
+        tags_results[tag_name]['previous_value'] = plc_tag.value
 
-        if str(logix_util.plc.read(tag_name).value).lower() == tag_value.lower():
-            # FIXME - do this check .... better?
+        tag_value_check = TagValueCheck(tag_value, plc_tag)
+        tag_values_equal = tag_value_check.compare()
+        if tag_values_equal:
             tags_results[tag_name]['no_change_need'] = True
             continue
 
-        # FIXME - Need to clean this up later, but it's fine for PoC
-        plc_data_type = logix_util.plc.read(tag_name).type
+        write_result = logix_util.plc.write(tag_name, tag_value)
 
-        typecast_tag_value = logix_util.typecast_plc_value(plc_data_type, tag_value)
-        # q.q(type())
-        write_result = logix_util.plc.write(tag_name, typecast_tag_value)
+        if write_result.error is not None:
+            module.fail_json('%s failed to write' % (tag_name))
 
-        if not bool(write_result):
-            logix_util.module.fail_json('Failed to write tag')
+        updated_tag_value = logix_util.plc.read(tag_name)
+        tag_value_check.update_plc_tag(updated_tag_value)
+        tag_values_equal = tag_value_check.compare()
+        if not tag_values_equal:
+            module.fail_json('%s failed to write' % (tag_name))
 
-
-        tags_results[tag_name]['data_type'] = plc_data_type
+        # extra output properties
+        tags_results[tag_name]['data_type'] = plc_tag.type
         tags_results[tag_name]['value'] = tag_value
         tags_results[tag_name]['write_result'] = write_result
-        if tags_results[tag_name]['write_result']:
-            has_changed = True
+
+        has_changed = True
 
     module.exit_json(msg="Tags values", changed=has_changed, ansible_module_results=tags_results)
 
