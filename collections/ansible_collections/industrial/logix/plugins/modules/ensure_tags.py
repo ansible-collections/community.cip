@@ -43,8 +43,6 @@ options:
       value:
         description:
           - Value to ensure the tag is set to.
-          - This value is always a string in the playbook and will by typecast
-            accordingly
         required: true
         type: str
 notes:
