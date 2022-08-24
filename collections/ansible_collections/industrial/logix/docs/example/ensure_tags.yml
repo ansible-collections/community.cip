@@ -1,6 +1,6 @@
 ---
 - name: Test tags have a specific value
-  hosts: plc
+  hosts: ControlLogix-L85E
   gather_facts: false
   tasks:
   - name: Ensure tags have a specific value for Tag Playground 
