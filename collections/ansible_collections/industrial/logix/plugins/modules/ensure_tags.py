@@ -46,7 +46,7 @@ options:
         required: true
         type: str
 notes:
-    - some tags will fail due to a value being overwritten after a performing a write
+    - Caution: If another source is simultaneously writing to the same PLC tag that Ansible is modifying (including a program in the PLC itself), the task may fail when the task reads the tag to validate the modification was successful
 """
 
 EXAMPLES = """
