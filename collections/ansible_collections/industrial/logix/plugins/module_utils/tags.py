@@ -1,5 +1,10 @@
+from typing import Type, Tuple
+from ansible_collections.industrial.logix.plugins.module_utils.logix import LogixUtil
+from pycomm3 import Tag
+
+
 class TagCheck:
-    def __init__(self, logix_util, tag_name):
+    def __init__(self, logix_util: Type[LogixUtil], tag_name: str):
         self.logix_util = logix_util
         self.tag_name = tag_name
         self.msg = ''
@@ -16,7 +21,7 @@ class TagCheck:
         if tag_info['external_access'] != 'Read/Write':
             raise Exception('Tag %s does not have correct permissions' % self.tag_name)
 
-    def verify(self):
+    def verify(self) -> Tuple[bool, str]:
         try:
             self.check_tag_exists()
             self.check_tag_permissions()
@@ -28,13 +33,13 @@ class TagCheck:
 
 # can add type validation for plc_tag for all compare statements
 class TagValueCheck():
-    def __init__(self, param_tag_value, plc_tag):
+    def __init__(self, param_tag_value: any, plc_tag: Type[Tag]):
         self.param_tag_value = param_tag_value
         self.plc_tag_value = plc_tag.value
         self.plc_data_type = plc_tag.type
         self.int_data_types = ['INT', 'DINT', 'SINT', 'LINT', 'USINT', 'UINT', 'UDINT', 'ULINT']
 
-    def update_plc_tag(self, plc_tag):
+    def update_plc_tag(self, plc_tag: Type[Tag]):
         self.plc_tag_value = plc_tag.value
         self.plc_tag_type = plc_tag.type
 
@@ -52,7 +57,7 @@ class TagValueCheck():
     def compare_int(self):
         return self.param_tag_value == self.plc_tag_value
 
-    def compare(self):
+    def compare(self) -> bool:
         if self.plc_data_type == 'STRING':
             return self.compare_string()
         elif self.plc_data_type == 'BOOL':
