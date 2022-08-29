@@ -47,6 +47,7 @@ options:
         type: str
 notes:
     - Caution: If another source is simultaneously writing to the same PLC tag that Ansible is modifying (including a program in the PLC itself), the task may fail when the task reads the tag to validate the modification was successful
+ - Caution: Due to the fact that when writing a tag of type REAL on most PLCs do not take the exact value passed (EX writing when 49.201 the PLC will read 49.20100021362305), `ensure_tags` will validate the tag value to the precision passed in the playbook. For the 49.201 example, Ansible will ensure that the value in the PLC starts with the numbers 49.201, but does not check beyond the thousandths place. If the PLC reads 49.20100000, 49.2019999, or 49.2018675309, they will all pass, but if the PLC reads 49.202 or 49.200 it will fail
 """
 
 EXAMPLES = """
