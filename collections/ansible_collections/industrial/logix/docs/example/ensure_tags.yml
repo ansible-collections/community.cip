@@ -1,20 +1,18 @@
 ---
 - name: Test tags have a specific value
-  hosts: plc
+  hosts: ControlLogix-L85E
   gather_facts: false
   tasks:
-  - name: Ensure tags have a specific value
+  - name: Ensure tags have a specific value for Tag Playground 
     industrial.logix.ensure_tags:
+      program: 'Tag_Playground'
       tags:
         - name: "modified_by_ansible"
-          value: "True"
+          value: False
+  - name: Ensure tags have a specific value for Sine Wave Generator
+    industrial.logix.ensure_tags:
+      program: 'Sine_Wave_Generator'
+      tags:
         - name: "M_PI"
-          value: "3.1415927410125732"
-        - name: "Toggle"
-          value: "False"
-        - name: "ttus"
-          value: "2022"
-    register: list_tags_out
-
-  - debug: var=list_tags_out
+          value: 3.14
 

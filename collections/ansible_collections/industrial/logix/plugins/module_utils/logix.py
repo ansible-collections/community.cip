@@ -37,7 +37,7 @@ class LogixUtil(object):
 
     def typecast_plc_value(self, plc_data_type, tag_value):
         if plc_data_type == 'BOOL':
-            tag_value = tag_value.lower() in ['true', '1', 't', 'y', 'yes', 'false', '0', 'f', 'n', 'no']
+            tag_value = tag_value.lower() in ['true', '1', 't', 'y', 'yes']
         elif plc_data_type == 'REAL' or plc_data_type == 'FLOAT':
             tag_value = float(tag_value)
         elif plc_data_type == 'DINT' or plc_data_type == 'DINT':
