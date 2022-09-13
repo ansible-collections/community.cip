@@ -1,0 +1,23 @@
+---
+- name: Ensure tags have a specific value for Tag Playground 
+  industrial.logix.ensure_tags:
+    program: 'Tag_Playground'
+    tags:
+      - name: "modified_by_ansible"
+        value: "{{ item }}"
+  register: result
+- debug: var=result
+
+- name: assert that value is unchanged
+  when: item == result['ansible_module_results']['Program:Tag_Playground.modified_by_ansible']['previous_value']
+  assert:
+    that:
+      - result is not changed
+      - result is success
+
+- name: assert that value is changed
+  when: item != result['ansible_module_results']['Program:Tag_Playground.modified_by_ansible']['previous_value']
+  assert:
+    that:
+      - result is changed
+      - result is success

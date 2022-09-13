@@ -1,0 +1,11 @@
+---
+- name: Test tags have a specific value
+  hosts: ControlLogix-L85E
+  gather_facts: false
+  tasks:
+    - name: stuff
+      ansible.builtin.include_tasks: verify_tag.yml
+      loop:
+        - False
+        - True
+        - True
