@@ -3,9 +3,53 @@
   hosts: ControlLogix-L85E
   gather_facts: false
   tasks:
-    - name: stuff
+    - name: Test BOOL value tag
       ansible.builtin.include_tasks: verify_tag.yml
+      vars:
+        program: Tag_Playground
+        tag: rw_BOOL
       loop:
         - False
         - True
         - True
+
+    - name: Test INT value tag
+      ansible.builtin.include_tasks: verify_tag.yml
+      vars:
+        program: Tag_Playground
+        tag: rw_INT
+      loop:
+        - 16
+        - 13
+        - 13
+
+    - name: Test DINT value tag
+      ansible.builtin.include_tasks: verify_tag.yml
+      vars:
+        program: Tag_Playground
+        tag: rw_INT
+      loop:
+        - 1337
+        - 42
+        - 42
+
+    - name: Test STRING value tag
+      ansible.builtin.include_tasks: verify_tag.yml
+      vars:
+        program: Tag_Playground
+        tag: rw_STRING
+      loop:
+        - 'good morning'
+        - 'buenos dias'
+        - 'buenos dias'
+
+    - name: Test REAL value tag
+      ansible.builtin.include_tasks: verify_tag.yml
+      vars:
+        program: Sine_Wave_Generator
+        tag: M_PI
+        program_tag: Program:Sine_Wave_Generator.M_PI
+      loop:
+        - 3.14
+        - 3.15
+        - 3.15

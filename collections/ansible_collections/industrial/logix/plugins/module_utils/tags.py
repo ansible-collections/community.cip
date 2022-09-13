@@ -43,6 +43,12 @@ class TagValueCheck():
         self.plc_tag_value = plc_tag.value
         self.plc_tag_type = plc_tag.type
 
+    def truncate_float_value(self) -> float:
+        param_precision_len = len(str(self.param_tag_value).split('.')[1])
+        first, second = str(self.plc_tag_value).split('.')
+        precise_tag_value = '.'.join((first, second[:param_precision_len]))
+        return float(precise_tag_value)
+
     def compare_str(self):
         return self.param_tag_value == self.plc_tag_value
 
@@ -51,7 +57,8 @@ class TagValueCheck():
 
     # TODO: implement support for precision
     def compare_float(self):
-        return str(self.param_tag_value) in str(self.plc_tag_value)
+        precise_tag_value = self.truncate_float_value()
+        return str(self.param_tag_value) == str(precise_tag_value)
 
     # TODO: implement support for ranges
     def compare_int(self):
@@ -59,7 +66,7 @@ class TagValueCheck():
 
     def compare(self) -> bool:
         if self.plc_data_type == 'STRING':
-            return self.compare_string()
+            return self.compare_str()
         elif self.plc_data_type == 'BOOL':
             return self.compare_bool()
         elif self.plc_data_type == 'REAL' or self.plc_data_type == 'FLOAT':

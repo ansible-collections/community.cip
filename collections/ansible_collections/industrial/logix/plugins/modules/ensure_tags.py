@@ -111,6 +111,12 @@ def main():
         tags_results[tag_name]['previous_value'] = plc_tag.value
 
         tag_value_check = TagValueCheck(tag_value, plc_tag)
+
+        if isinstance(plc_tag.value, float):
+            previous_truncated_value = tag_value_check.truncate_float_value()
+            tags_results[tag_name]['previous_value'] = previous_truncated_value
+            tags_results[tag_name]['previous_raw_value'] = plc_tag.value
+
         tag_values_equal = tag_value_check.compare()
         if tag_values_equal:
             tags_results[tag_name]['no_change_need'] = True
