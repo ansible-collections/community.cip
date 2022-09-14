@@ -110,7 +110,11 @@ def main():
         plc_tag = logix_util.plc.read(tag_name)
         tags_results[tag_name]['previous_value'] = plc_tag.value
 
-        tag_value_check = TagValueCheck(tag_value, plc_tag)
+        try:
+            tag_value_check = TagValueCheck(tag_value, plc_tag)
+        except Exception as e:
+            param_tag_value_type = type(tag_value).__name__.upper()
+            module.fail_json('%s. Arg type: %s, plc type: %s' % (e, param_tag_value_type, plc_tag.type))
 
         if isinstance(plc_tag.value, float):
             previous_truncated_value = tag_value_check.truncate_float_value()
