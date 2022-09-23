@@ -29,36 +29,45 @@ options:
     description:
       - service code for the request (single byte)
       required: True
-      type: Union[int, bytes]
+      type: str
   class_code:
     description:
       - request object class ID
       required: True
-      type: Union[int, bytes]
+      type: str
   instance:
     description:
       - ID for an instance of the class. If set to 0, request class attributes
       required: True
-      type: Union[int, bytes]
+      type: str
   attribute:
     description:
       - attribute ID for the service/class/instance
       required: False
       default: b''
-      type: Union[int, bytes]
+      type: str
   request_data:
     description: 
       - any additional data required for the request
       required: False
-      default: b''
+      default: None
       type: any
   data_type:
     description: 
-      - a DataType class (enumerated here: ___) that will be used to decode the
-        response. None will return bytes
+      - dict containing discription of the expected return data type
       required: False
       default: None
-      type: Union[Type[DataType], DataType, None]
+      type: dict
+      options:
+        elementary_type:
+          description: elementary data type, choices described here: https://docs.pycomm3.dev/en/latest/api_reference/data_types.html#pycomm3.cip.data_types.DataTypes
+          required: True
+          type: str
+        array_len:
+          description: If the data type if an array, the length of the array. Values less than 2 denote datatype is not an array
+          type: int
+          required: False
+          default: 1
   name:
     description:
       - return Tag.Tag value, arbitrary but can be for tracking returned Tags
@@ -85,12 +94,23 @@ from ansible.module_utils.basic import AnsibleModule
 from ansible.module_utils._text import to_native, to_text
 from ansible_collections.industrial.logix.plugins.module_utils.logix import LogixUtil
 
+from pycomm3 import data_types, DataTypes
 
 def main():
 
-     
+    dtspec = dict(
+        elementary_type=dict(required=True, type="str"),
+        array_len=dict(required=False, default = 1, type="int"),
+      )
+
     argspec = dict(
-        revision=dict(required=True, type="str"),
+        service=dict(required=True, type="str"),
+        class_code=dict(required=True, type="str"),
+        instance=dict(required=True, type="str"),
+        attribute=dict(required=False, default=b'', type="str"),
+        request_data=dict(required=False, default=None, type="any"),
+        data_type=dict(required=False, default=None, type="dict", options=dtspec),
+        name=dict(required=False, default=None, type="str"),
     )
 
     module = AnsibleModule(
@@ -99,20 +119,32 @@ def main():
 
     logix_util = LogixUtil(module)
 
+    # coerce data_type from a description of the data type to the actual object. This is gonna be messy
+    dt_arg = module.params['data_type']
+    data_type = None
+    if dt_arg is not None:
+        if DataTypes.get(dt_arg['elementary_type']) is None:
+            module.fail_json(f'elementart_type {dt_arg["elementary_type"]} is not one of allowed data types: {DataTypes.attributes}')
+        
+        if dt_arg['array_len'] > 1:
+            data_type = data_types.Array(element_type_=DataTypes.get(dt_arg['elementary_type']), length_=dt_arg['array_len'])
+        else:
+            data_type = DataTypes.get(dt_arg['elementary_type'])
+    
     ret = logix_util.plc.generic_message(
-        service = module.params['service'],
-        class_code = module.params['class_code'],
-        instance = module.params['instance'],
-        attribute = module.params['attribute'],
-        request_data = module.params['request_data'],
-        data_type = module.params['datatype'], # This will need to be fixed
+        service = int(module.params['service'], 0), # https://stackoverflow.com/a/21669474
+        class_code = int(module.params['class_code'], 0),
+        instance = int(module.params['instance'], 0),
+        attribute = int(module.params['attribute'], 0),
+        #request_data = module.params['request_data'],
+        data_type = data_type,
         name = module.params['name'],
-        connected = False, # Double check all this. We are following th pycomm3 docs examples
-        unconnected_send = True,
-        route_path= True
+        connected = False, # Double check all connection stuff
+        unconnected_send = False,
+        route_path= False
     )
 
-    module.exit_json(f'Generic message returns: {ret}', changed=False)
+    module.exit_json(msg=f'{ret}', changed=False)
 
 
 if __name__ == "__main__":
