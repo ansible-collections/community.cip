@@ -19,9 +19,10 @@ DOCUMENTATION = """
 module: generic_message
 short_description: Craft and send a custom "generic" CIP message
 description:
-    - A thin abstraction of the pycomm3 generic_message API call. Connection related arguments are handled by ansible.
+    - A thin abstraction of the pycomm3 generic_message() API call. Connection related arguments are handled by ansible.
       This is intended for experienced developers needing functionality not already covered by the plugin. Think similar
-      to crafting a TCP packet by hand
+      to crafting a TCP packet by hand. Typically, this call uses many builtin constants provided by the pycomm3 
+      package, but in this case raw hex or dec values must be used
 author:
 - Aaron Neustedter (@aaron97neu)
 options:
@@ -51,7 +52,7 @@ options:
       - any additional data required for the request
       required: False
       default: None
-      type: any
+      type: str
   data_type:
     description: 
       - dict containing discription of the expected return data type
@@ -108,7 +109,7 @@ def main():
         class_code=dict(required=True, type="str"),
         instance=dict(required=True, type="str"),
         attribute=dict(required=False, default=b'', type="str"),
-        request_data=dict(required=False, default=None, type="any"),
+        request_data=dict(required=False, default=None, type="str"),
         data_type=dict(required=False, default=None, type="dict", options=dtspec),
         name=dict(required=False, default=None, type="str"),
     )
@@ -131,15 +132,20 @@ def main():
         else:
             data_type = DataTypes.get(dt_arg['elementary_type'])
     
+    # request_data expects a bits-like object, so None (if no argument is supplied) needs to be converted
+    request_data = module.params['request_data']
+    if request_data == None:
+      request_data = b''
+
     ret = logix_util.plc.generic_message(
         service = int(module.params['service'], 0), # https://stackoverflow.com/a/21669474
         class_code = int(module.params['class_code'], 0),
         instance = int(module.params['instance'], 0),
         attribute = int(module.params['attribute'], 0),
-        #request_data = module.params['request_data'],
+        request_data = bytes(int(request_data, 0)),
         data_type = data_type,
         name = module.params['name'],
-        connected = False, # Double check all connection stuff
+        connected = False, # TODO: Double check all connection stuff
         unconnected_send = False,
         route_path= False
     )
