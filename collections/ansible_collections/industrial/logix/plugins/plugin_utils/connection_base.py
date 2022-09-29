@@ -9,7 +9,8 @@
 # FIXME FIXME FIXME
 #
 # This entire file can go away as soon as this PR (or some iteration of it)
-# is merged upstream and released so we can then depend on it.
+# is merged upstream and released so we can then depend on it:
+# https://github.com/ansible-collections/ansible.netcommon/pull/470
 #
 # Currently vendoring this so we don't run into a library behavioral change
 # in Ansible Core 2.12 and newer that was causing failures for our
