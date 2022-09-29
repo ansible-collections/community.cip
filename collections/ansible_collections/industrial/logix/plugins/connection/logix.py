@@ -80,6 +80,10 @@ from ansible.module_utils.urls import open_url
 from ansible.playbook.play_context import PlayContext
 from ansible.plugins.connection import NetworkConnectionBase, ensure_connect
 
+
+# FIXME: Change this to the correct upstream one ASAP
+from ansible_collections.industrial.logix.plugins.plugin_utils.connection_base import PersistentConnectionBase
+
 try:
     from pycomm3 import LogixDriver
     HAS_PYCOMM3 = True
@@ -87,7 +91,7 @@ except ImportError:
     HAS_PYCOMM3 = False
 
 
-class Connection(NetworkConnectionBase):
+class Connection(PersistentConnectionBase):
     '''Rockwell Allen-Bradley ControlLogix via pycomm3 library connection'''
 
     transport = 'logix'
@@ -103,6 +107,7 @@ class Connection(NetworkConnectionBase):
             )
 
         self.host = self.get_option('host')
+        #self._sub_plugin = {"type": "external"}
 
     def _connect(self):
         if not self.connected:
