@@ -1,0 +1,28 @@
+---
+- name: Verify CIP identity
+  hosts: plc
+  gather_facts: false
+  tasks:
+  - name: Verify CIP identity
+    industrial.logix.verify_cip_identity:
+      cip_identity:
+        vendor_id: "{{ hostvars[inventory_hostname]['vendor_id'] }}"
+        device_type: "{{ hostvars[inventory_hostname]['device_type'] }}"
+        product_code: "{{ hostvars[inventory_hostname]['product_code'] }}"
+        revision: "{{ hostvars[inventory_hostname]['revision'] }}"
+        status: 
+          owned: "{{ hostvars[inventory_hostname]['owned'] }}"
+          configured: "{{ hostvars[inventory_hostname]['configured'] }}"
+          mode: "{{ hostvars[inventory_hostname]['mode'] }}"
+          minor_recoverable_fault: "{{ hostvars[inventory_hostname]['minor_recoverable_fault'] }}"
+          minor_unrecoverable_fault: "{{ hostvars[inventory_hostname]['minor_unrecoverable_fault'] }}"
+          major_recoverable_fault: "{{ hostvars[inventory_hostname]['major_recoverable_fault'] }}"
+          major_unrecoverable_fault: "{{ hostvars[inventory_hostname]['major_unrecoverable_fault'] }}"
+          keyswitch: "{{ hostvars[inventory_hostname]['keyswitch'] }}"
+          transitioning: "{{ hostvars[inventory_hostname]['transitioning'] }}"
+          debug: "{{ hostvars[inventory_hostname]['debug'] }}"
+        serial_number: "{{ hostvars[inventory_hostname]['serial_number'] }}"
+        product_name: "{{ hostvars[inventory_hostname]['product_name'] }}"
+    register: ensure_firmware_version_out
+
+  - debug: var=ensure_firmware_version_out
