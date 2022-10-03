@@ -1,14 +1,14 @@
-# ~IN ACTIVE DEVELOPMENT~ industrial.logix Collection for Ansible
+# IN ACTIVE DEVELOPMENT~ industrial.logix Collection for Ansible
 <!-- Add CI and code coverage badges here. Samples included below. -->
 [![CI](https://github.com/ansible-collections/industrial.logix/workflows/CI/badge.svg?event=push)](https://github.com/ansible-collections/industrial.logix/actions) [![Codecov](https://img.shields.io/codecov/c/github/ansible-collections/industrial.logix)](https://codecov.io/gh/ansible-collections/industrial.logix)
 
 <!-- Describe the collection and why a user would want to use it. What does the collection do? -->
 
-Collection for the Rockwell ControlLogix Programmable Logic Controllers (PLC)
+Collection to manage to Alen Bradley ControlLogix Programmable Logic Controllers (PLC) via the Common Industrial Protocol. This utilizes the [pycomm3 python library](https://github.com/ottowayi/pycomm3) to communicate and manage devices.
 
 ## Hacking
 
-To use this while developing, run the following commands from within your local checkout to this git repo in order to symlink this git repo to the appropriate Ansible Collection path
+To use this while developing, run the following commands from within your local directory you pulled to this git repo in order to symlink this git repo to the appropriate Ansible Collection path
 
 ```shell
   mkdir -p ~/.ansible/collections/ansible_collections/industrial
@@ -43,12 +43,12 @@ We are actively accepting new contributors.
 
 Any kind of contribution is very welcome.
 
-You don't know how to start? Refer to our [contribution guide](CONTRIBUTING.md)!
+You don't know how to start? Refer to our [contribution guide](https://docs.ansible.com/ansible/devel/community/contributor_path.html)!
 
 We use the following guidelines:
 
-* [CONTRIBUTING.md](CONTRIBUTING.md)
-* [REVIEW_CHECKLIST.md](REVIEW_CHECKLIST.md)
+* [CONTRIBUTING](https://docs.ansible.com/ansible/devel/community/contributor_path.html#making-your-first-contribution)
+* [REVIEW_CHECKLIST](https://docs.ansible.com/ansible/devel/community/collection_contributors/collection_reviewing.html)
 * [Ansible Community Guide](https://docs.ansible.com/ansible/latest/community/index.html)
 * [Ansible Development Guide](https://docs.ansible.com/ansible/devel/dev_guide/index.html)
 * [Ansible Collection Development Guide](https://docs.ansible.com/ansible/devel/dev_guide/developing_collections.html#contributing-to-collections)
@@ -57,7 +57,7 @@ We use the following guidelines:
 
 The current maintainers are listed in the [MAINTAINERS](MAINTAINERS) file. If you have questions or need help, feel free to mention them in the proposals.
 
-To learn how to maintain / become a maintainer of this collection, refer to the [Maintainer guidelines](MAINTAINING.md).
+To learn how to maintain / become a maintainer of this collection, refer to the [Maintainer guidelines](https://docs.ansible.com/ansible/devel/community/maintainers.html).
 
 ## Governance
 
@@ -89,11 +89,13 @@ Every voice is important. If you have something on your mind, create an issue or
 ### Installing the Collection from Ansible Galaxy
 
 Before using this collection, you need to install it with the Ansible Galaxy command-line tool:
+
 ```bash
 ansible-galaxy collection install industrial.logix
 ```
 
 You can also include it in a `requirements.yml` file and install it with `ansible-galaxy collection install -r requirements.yml`, using the format:
+
 ```yaml
 ---
 collections:
@@ -101,6 +103,7 @@ collections:
 ```
 
 Note that if you install the collection from Ansible Galaxy, it will not be upgraded automatically when you upgrade the `ansible` package. To upgrade the collection to the latest available version, run the following command:
+
 ```bash
 ansible-galaxy collection install industrial.logix --upgrade
 ```
@@ -121,15 +124,14 @@ See the [changelog](https://github.com/ansible-collections/industrial.logix/tree
 
 <!-- List out where the user can find additional information, such as working group meeting times, slack/IRC channels, or documentation for the product this collection automates. At a minimum, link to: -->
 
-- [Ansible Collection overview](https://github.com/ansible-collections/overview)
-- [Ansible User guide](https://docs.ansible.com/ansible/devel/user_guide/index.html)
-- [Ansible Developer guide](https://docs.ansible.com/ansible/devel/dev_guide/index.html)
-- [Ansible Collections Checklist](https://github.com/ansible-collections/overview/blob/main/collection_requirements.rst)
-- [Ansible Community code of conduct](https://docs.ansible.com/ansible/devel/community/code_of_conduct.html)
-- [The Bullhorn (the Ansible Contributor newsletter)](https://us19.campaign-archive.com/home/?u=56d874e027110e35dea0e03c1&id=d6635f5420)
-- [News for Maintainers](https://github.com/ansible-collections/news-for-maintainers)
+* [Ansible Collection overview](https://github.com/ansible-collections/overview)
+* [Ansible User guide](https://docs.ansible.com/ansible/devel/user_guide/index.html)
+* [Ansible Developer guide](https://docs.ansible.com/ansible/devel/dev_guide/index.html)
+* [Ansible Collections Checklist](https://github.com/ansible-collections/overview/blob/main/collection_requirements.rst)
+* [Ansible Community code of conduct](https://docs.ansible.com/ansible/devel/community/code_of_conduct.html)
+* [The Bullhorn (the Ansible Contributor newsletter)](https://us19.campaign-archive.com/home/?u=56d874e027110e35dea0e03c1&id=d6635f5420)
+* [News for Maintainers](https://github.com/ansible-collections/news-for-maintainers)
 
 ## Licensing
 
 [MIT](https://opensource.org/licenses/MIT)
-
