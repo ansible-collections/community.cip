@@ -55,6 +55,8 @@ class PersistentConnectionBase(ConnectionBase):
         self._messages = []
         self._conn_closed = False
 
+        self._sub_plugin = {}
+
         self._local = connection_loader.get("local", play_context, "/dev/null")
         self._local.set_options()
 
