@@ -1,13 +1,14 @@
 # Copyright: Red Hat Inc.
 # MIT (see COPYING or https://opensource.org/licenses/MIT)
 
-from __future__ import (absolute_import, division, print_function)
+from __future__ import absolute_import, division, print_function
+
 __metaclass__ = type
 
 DOCUMENTATION = """
 ---
-author: Ansible Edge Automation Team <https://github.com/ansible-edge>
-connection: industrial.logix.logix
+author: Ansible-Collections Common Industrial Protocol Team
+name: industrial.logix.logix
 short_description: Plugin to directly interact with Rockwell Allen-Bradley ControlLogix
 description:
   - This connection plugin provides a connection to Rockwell Allen-Bradley
@@ -82,19 +83,22 @@ from ansible.plugins.connection import NetworkConnectionBase, ensure_connect
 
 
 # FIXME: Change this to the correct upstream one ASAP
-from ansible_collections.industrial.logix.plugins.plugin_utils.connection_base import PersistentConnectionBase
+from ansible_collections.industrial.logix.plugins.plugin_utils.connection_base import (
+    PersistentConnectionBase,
+)
 
 try:
     from pycomm3 import LogixDriver
+
     HAS_PYCOMM3 = True
 except ImportError:
     HAS_PYCOMM3 = False
 
 
 class Connection(PersistentConnectionBase):
-    '''Rockwell Allen-Bradley ControlLogix via pycomm3 library connection'''
+    """Rockwell Allen-Bradley ControlLogix via pycomm3 library connection"""
 
-    transport = 'logix'
+    transport = "logix"
     has_pipelining = False
     has_tty = False
 
@@ -106,27 +110,25 @@ class Connection(PersistentConnectionBase):
                 "Error> python pycomm3 module required for industrial.logix.logix connection plugin"
             )
 
-        self.host = self.get_option('host')
-        #self._sub_plugin = {"type": "external"}
+        self.host = self.get_option("host")
+        # self._sub_plugin = {"type": "external"}
 
     def _connect(self):
         if not self.connected:
-            host = self.get_option('host')
+            host = self.get_option("host")
 
             self._connected = True
 
             self.queue_message(
-                'vvv',
-                "Connection to ControlLogix established: %s" % host
+                "vvv", "Connection to ControlLogix established: %s" % host
             )
 
     def close(self):
-        '''
+        """
         Close the active session to the device
-        '''
+        """
         # only close the connection if its connected.
         if self._connected:
-            self.queue_message('vvv', "closing connection to ControlLogix device")
+            self.queue_message("vvv", "closing connection to ControlLogix device")
 
         super(Connection, self).close()
-
