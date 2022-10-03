@@ -4,9 +4,9 @@
 
 <!-- Describe the collection and why a user would want to use it. What does the collection do? -->
 
-Collection to manage to Alen Bradley ControlLogix Programmable Logic Controllers (PLC) via the Common Industrial Protocol. This utilizes the [pycomm3 python library](https://github.com/ottowayi/pycomm3) to communicate and manage devices.
+Collection to manage to Alen Bradley ControlLogix Programmable Logic Controllers (PLC) via the Common Industrial Protocol (CIP). This utilizes the [pycomm3 python library](https://github.com/ottowayi/pycomm3) to communicate and manage devices.
 
-## Hacking
+## Development Environment
 
 To use this while developing, run the following commands from within your local directory you pulled to this git repo in order to symlink this git repo to the appropriate Ansible Collection path
 
