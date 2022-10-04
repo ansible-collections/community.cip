@@ -8,7 +8,7 @@ Collection to manage Programmable Logic Controllers (PLC) via the Common Industr
 
 ## Development Environment
 
-To use this while developing, run the following commands from within your local directory you pulled to this git repo in order to symlink this git repo to the appropriate Ansible Collection path
+To use this while developing, run the following commands from within your local directory you pulled to this git repo to in order to symlink this git repo to the appropriate Ansible Collection path
 
 ```shell
   mkdir -p ~/.ansible/collections/ansible_collections/industrial
