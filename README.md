@@ -15,6 +15,10 @@ To use this while developing, run the following commands from within your local 
   ln -s $(pwd) ~/.ansible/collections/ansible_collections/industrial/logix
 ```
 
+## Execution Environment
+
+Execution environments allow for a standardized and containerized environment to run Ansible in. This is used heavily in situations like Ansible Automation Platform. [docs/execution-environment](docs/execution-environment) contains an example execution environment that can be used with the industrial.logix collection. For more information, refer to the [ansible-builder](https://ansible-builder.readthedocs.io/en/stable/) documentation.
+
 ## Code of Conduct
 
 We follow the [Ansible Code of Conduct](https://docs.ansible.com/ansible/devel/community/code_of_conduct.html) in all our interactions within this project.
