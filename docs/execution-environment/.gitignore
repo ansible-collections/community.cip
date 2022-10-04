@@ -1,0 +1,3 @@
+# Docker build artifacts
+context
+ansible.cfg
