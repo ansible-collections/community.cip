@@ -40,12 +40,7 @@ class TagCheck:
 
 # can add type validation for plc_tag for all compare statements
 class TagValueCheck:
-<<<<<<< HEAD
-    def __init__(self, param_tag_value: any, plc_tag):
-
-=======
     def __init__(self, param_tag_value: any, plc_tag: Type[Tag]):
->>>>>>> main
         if not isinstance(param_tag_value, type(plc_tag.value)):
             raise Exception("Data type mismatch")
 

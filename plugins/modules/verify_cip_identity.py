@@ -165,19 +165,6 @@ def main():
 
     subopts = dict(
         vendor_id=dict(required=False, type="int"),
-<<<<<<< HEAD
-        device_type=dict(required=False, type="int"),
-        product_code=dict(required=False, type="int"),
-        revision=dict(required=False, type="str"),
-        status=dict(required=False, type="dict", options=statusopt),
-        serial_number=dict(required=False, type="str"),
-        product_name=dict(required=False, type="str"),
-    )
-
-    argspec = dict(
-        cip_identity=dict(type="dict", options=subopts, required=True)
-    )
-=======
         device_type=dict(requied=False, type="int"),
         product_code=dict(requied=False, type="int"),
         revision=dict(requied=False, type="str"),
@@ -189,7 +176,6 @@ def main():
     argspec = dict(cip_identity=dict(type="dict", options=subopts))
 
     module = AnsibleModule(argument_spec=argspec)
->>>>>>> main
 
     module = AnsibleModule(argument_spec=argspec)
 
