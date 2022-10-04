@@ -152,7 +152,7 @@ def main():
     # request_data expects a bits-like object, so None (if no argument is supplied) needs to be converted
     request_data = module.params['request_data']
     if request_data == None:
-      request_data = b''
+        request_data = b''
 
     ret = logix_util.plc.generic_message(
         service = int(module.params['service'], 0), # int(something, 0) -> https://stackoverflow.com/a/21669474
@@ -172,3 +172,4 @@ def main():
 
 if __name__ == "__main__":
     main()
+
