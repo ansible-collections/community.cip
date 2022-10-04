@@ -4,7 +4,14 @@ __metaclass__ = type
 
 from typing import Type, Tuple
 from ansible_collections.industrial.logix.plugins.module_utils.logix import LogixUtil
-from pycomm3 import Tag
+
+from ansible.module_utils.errors import AnsibleValidationError
+try:
+    from pycomm3 import Tag
+except ImportError:
+    raise AnsibleValidationError(
+        "Error> python pycomm3 module required for industrial.logix.logix connection plugin"
+    )
 
 
 class TagCheck:
