@@ -66,7 +66,7 @@ class LogixUtil(object):
             7: "At least one I/O connection established, all in idle mode",
             8: "The Status attribute is not applicable to this instance. Valid only for instances greater than one (1).",
             9: "Reserved",
-            **{i: "Vendore specific" for i in range(10, 16)},
+            **{i: "Vendor specific" for i in range(10, 16)},
         }
 
         keyswitch = {
