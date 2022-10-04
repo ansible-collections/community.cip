@@ -1,0 +1,17 @@
+---
+- name: 'Set {{ tag }} to {{ item }} for program: {{ program }}'
+  industrial.logix.ensure_tags:
+    program: '{{ program }}'
+    tags:
+      - name: '{{ tag }}'
+        value: '{{ item }}'
+  register: result
+  ignore_errors: True
+- debug: var=result
+
+- name: assert that value is unchanged and failed due to mismatch
+  assert:
+    that:
+      - result is not changed
+      - result is failed
+      - {'"Data type mismatch" in result[msg]'}
