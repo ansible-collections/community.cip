@@ -4,7 +4,11 @@
 
 <!-- Describe the collection and why a user would want to use it. What does the collection do? -->
 
+<<<<<<< HEAD
 Collection to manage Programmable Logic Controllers (PLC) via the Common Industrial Protocol (CIP). This utilizes the [pycomm3 python library](https://github.com/ottowayi/pycomm3) to communicate and manage devices. While this collection may provide functionality for any CIP device, it has only been tested against Allen Bradley PLCs at this time. This scope of this collection is limited to writing tags and verifying other properties of the PLC device limited to the capabilities of the pycomm3 Python library.
+=======
+Collection to manage to Programmable Logic Controllers (PLC) via the Common Industrial Protocol (CIP). This utilizes the [pycomm3 python library](https://github.com/ottowayi/pycomm3) to communicate and manage devices. While this collection may provide functionality for any CIP devices it has only been tested against Allen Bradley PLCs at this time. This scope of this collection is limited to writing tags and verifying other properties of the PLC device limited to the capabilities of the pycomm3 Python library.
+>>>>>>> b8c37a6 (moved all playbooks into playbooks directory and updated readme)
 
 ## Development Environment
 
