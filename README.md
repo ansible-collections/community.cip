@@ -1,10 +1,10 @@
-# IN ACTIVE DEVELOPMENT~ industrial.logix Collection for Ansible
+# IN ACTIVE DEVELOPMENT industrial.logix Collection for Ansible
 <!-- Add CI and code coverage badges here. Samples included below. -->
 [![CI](https://github.com/ansible-collections/industrial.logix/workflows/CI/badge.svg?event=push)](https://github.com/ansible-collections/industrial.logix/actions) [![Codecov](https://img.shields.io/codecov/c/github/ansible-collections/industrial.logix)](https://codecov.io/gh/ansible-collections/industrial.logix)
 
 <!-- Describe the collection and why a user would want to use it. What does the collection do? -->
 
-Collection to manage Programmable Logic Controllers (PLC) via the Common Industrial Protocol (CIP). This utilizes the [pycomm3 python library](https://github.com/ottowayi/pycomm3) to communicate and manage devices. While this collection may provide functionality for any CIP devices it has only been tested against Allen Bradley PLCs at this time. This scope of this collection is limited to writing tags and verifying other properties of the PLC device limited to the capabilities of the pycomm3 Python library.
+Collection to manage Programmable Logic Controllers (PLC) via the Common Industrial Protocol (CIP). This utilizes the [pycomm3 python library](https://github.com/ottowayi/pycomm3) to communicate and manage devices. While this collection may provide functionality for any CIP device, it has only been tested against Allen Bradley PLCs at this time. This scope of this collection is limited to writing tags and verifying other properties of the PLC device limited to the capabilities of the pycomm3 Python library.
 
 ## Development Environment
 
