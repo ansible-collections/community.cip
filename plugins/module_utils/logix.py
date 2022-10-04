@@ -5,6 +5,7 @@ __metaclass__ = type
 import atexit
 from ansible.module_utils.basic import AnsibleModule
 from ansible.module_utils.connection import Connection, ConnectionError
+
 try:
     from pycomm3 import LogixDriver, cip
 
