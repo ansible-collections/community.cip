@@ -5,7 +5,6 @@
 # MIT (see COPYING or https://opensource.org/licenses/MIT)
 
 from __future__ import absolute_import, division, print_function
-from asyncio import FastChildWatcher
 
 __metaclass__ = type
 
@@ -17,7 +16,7 @@ ANSIBLE_METADATA = {
 
 DOCUMENTATION = """
 ---
-module: tag_info
+module: verify_cip_identity
 short_description: Verify CIP identity of PLC
 description:
     - Verify CIP identity of PLC
@@ -29,7 +28,6 @@ options:
       - Dictionary of status properties that are part of CIP Identitiy
     required: true
     type: dict
-    elements: dict
     suboptions:
       vendor_id:
         description:
@@ -50,13 +48,12 @@ options:
         description:
           - firmware revision to validate in the form XX.YYY
         required: false
-        type: float
+        type: str
       status:
         description:
           - Value to ensure the tag is set to.
         required: false
         type: dict
-        elements: dict
         suboptions:
           owned:
             description:
@@ -168,15 +165,17 @@ def main():
 
     subopts = dict(
         vendor_id=dict(required=False, type="int"),
-        device_type=dict(requied=False, type="int"),
-        product_code=dict(requied=False, type="int"),
-        revision=dict(requied=False, type="str"),
-        status=dict(requied=False, type="dict", options=statusopt),
-        serial_number=dict(requied=False, type="str"),
-        product_name=dict(requied=False, type="str"),
+        device_type=dict(required=False, type="int"),
+        product_code=dict(required=False, type="int"),
+        revision=dict(required=False, type="str"),
+        status=dict(required=False, type="dict", options=statusopt),
+        serial_number=dict(required=False, type="str"),
+        product_name=dict(required=False, type="str"),
     )
 
-    argspec = dict(cip_identity=dict(type="dict", options=subopts))
+    argspec = dict(
+        cip_identity=dict(type="dict", options=subopts)
+    )
 
     module = AnsibleModule(argument_spec=argspec)
 

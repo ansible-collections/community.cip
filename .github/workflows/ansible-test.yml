@@ -66,6 +66,7 @@ jobs:
           # test-deps: >-
           #   ansible.netcommon
           #   ansible.utils
+      - run: pip install pycomm3
 
 ###
 # Unit tests (OPTIONAL)

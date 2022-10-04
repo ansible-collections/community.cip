@@ -7,7 +7,8 @@ __metaclass__ = type
 
 DOCUMENTATION = """
 ---
-author: Ansible-Collections Common Industrial Protocol Team
+author:
+- Adam Miller (@maxamillion)
 name: industrial.logix.logix
 short_description: Plugin to directly interact with Rockwell Allen-Bradley ControlLogix
 description:

@@ -16,7 +16,7 @@ ANSIBLE_METADATA = {
 
 DOCUMENTATION = """
 ---
-module: ensure_firmware_revision
+module: ensure_firmware_version
 short_description: Ensure firmware is a specific revision or fail
 description:
     - Ensure firmware is a specific revision or fail
@@ -26,8 +26,8 @@ options:
   revision:
     description:
       - firmware revision to validate in the form XX.YYY or XX
-    required: false
-    type: int
+    required: true
+    type: str
 """
 
 EXAMPLES = """
