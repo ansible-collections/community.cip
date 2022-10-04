@@ -22,14 +22,17 @@ class LogixUtil(object):
         self.cip = cip
 
         self.plc = LogixDriver(self.logix_address)
-        self.plc.open()
+
+        try: 
+            self.plc.open()
+        except Exception as error:
+            self.module.fail_json("Failed to open ControlLogix device %s, returned error message: (%s) Make sure this host is a PLC." % (self.logix_address, error))
 
         
         if not self.plc.connected:
             self.module.fail_json(
                 "Unable to connect to ControlLogix device: %s" % self.logix_address
             )
-
         atexit.register(self.cleanup)
 
     def cleanup(self):
