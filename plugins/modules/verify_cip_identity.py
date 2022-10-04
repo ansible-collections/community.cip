@@ -174,7 +174,7 @@ def main():
     )
 
     argspec = dict(
-        cip_identity=dict(type="dict", options=subopts)
+        cip_identity=dict(type="dict", options=subopts, required=True)
     )
 
     module = AnsibleModule(argument_spec=argspec)

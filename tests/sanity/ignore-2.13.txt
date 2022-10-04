@@ -1,7 +1,10 @@
+tests/utils/shippable/shippable.sh shellcheck:SC2153
 tests/utils/shippable/check_matrix.py replace-urlopen
 tests/utils/shippable/timing.py shebang
+plugins/connection/logix.py validate-modules:missing-gplv3-license
 plugins/modules/ensure_firmware_version.py validate-modules:missing-gplv3-license # This collection is MIT Licensed
 plugins/modules/ensure_tags.py validate-modules:missing-gplv3-license # This collection is MIT Licensed
 plugins/modules/generic_message.py validate-modules:missing-gplv3-license # This collection is MIT Licensed
 plugins/modules/tag_info.py validate-modules:missing-gplv3-license # This collection is MIT Licensed
 plugins/modules/verify_cip_identity.py validate-modules:missing-gplv3-license # This collection is MIT Licensed
+plugins/modules/verify_cip_identity.py validate-modules:no-log-needed # not a value that needs no_log

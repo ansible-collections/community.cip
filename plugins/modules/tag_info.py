@@ -19,10 +19,9 @@ DOCUMENTATION = """
 module: tag_info
 short_description: Pull information about current tags as set on the ControlLogix
 description:
-    - Info module to get a list of blueprints from Weldr
+  - Info module to get a list of blueprints from Weldr
 author:
 - Adam Miller (@maxamillion)
-options:
 """
 
 EXAMPLES = """
@@ -45,6 +44,7 @@ from ansible_collections.industrial.logix.plugins.module_utils.logix import Logi
 def main():
     module = AnsibleModule(
         argument_spec=dict(),
+        supports_check_mode=True
     )
 
     logix_util = LogixUtil(module)

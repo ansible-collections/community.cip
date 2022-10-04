@@ -8,8 +8,8 @@ __metaclass__ = type
 DOCUMENTATION = """
 ---
 author:
-- Adam Miller (@maxamillion)
-name: industrial.logix.logix
+  - Adam Miller (@maxamillion)
+name: logix
 short_description: Plugin to directly interact with Rockwell Allen-Bradley ControlLogix
 description:
   - This connection plugin provides a connection to Rockwell Allen-Bradley
