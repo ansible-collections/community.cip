@@ -1,0 +1,5 @@
+collections:
+  - name: industrial.logix
+  - name: community.general
+  - name: ansible.network
+  - name: ansible.posix
