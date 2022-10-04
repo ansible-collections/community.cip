@@ -51,11 +51,6 @@ jobs:
           - stable-2.14
           - devel
         # - milestone
-        exclude:
-          - ansible: stable-2.12
-            python: '2.6'
-          - ansible: stable-2.12
-            python: '2.7'
     runs-on: ubuntu-latest
     steps:
       # Run sanity tests inside a Docker container.
