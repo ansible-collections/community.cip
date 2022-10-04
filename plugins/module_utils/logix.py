@@ -7,7 +7,7 @@ from ansible.module_utils.basic import AnsibleModule
 from ansible.module_utils.connection import Connection, ConnectionError
 
 try:
-    from pycomm3 import LogixDriver, cip
+    from pycomm3 import LogixDriver, cip, CommError, ResponseError
 
     HAS_PYCOMM3 = True
 except ImportError:
@@ -26,13 +26,18 @@ class LogixUtil(object):
         self.cip = cip
 
         self.plc = LogixDriver(self.logix_address)
-        self.plc.open()
+
+        try:
+            self.plc.open()
+        except (CommError, ResponseError) as error:
+            self.module.fail_json(
+                "Failed to open ControlLogix device %s, returned error message: (%s) Make sure this host is a PLC." % (self.logix_address, error)
+            )
 
         if not self.plc.connected:
             self.module.fail_json(
                 "Unable to connect to ControlLogix device: %s" % self.logix_address
             )
-
         atexit.register(self.cleanup)
 
     def cleanup(self):
