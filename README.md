@@ -4,7 +4,7 @@
 
 <!-- Describe the collection and why a user would want to use it. What does the collection do? -->
 
-Collection to manage to Alen Bradley ControlLogix Programmable Logic Controllers (PLC) via the Common Industrial Protocol (CIP). This utilizes the [pycomm3 python library](https://github.com/ottowayi/pycomm3) to communicate and manage devices.
+Collection to manage to Programmable Logic Controllers (PLC) via the Common Industrial Protocol (CIP). This utilizes the [pycomm3 python library](https://github.com/ottowayi/pycomm3) to communicate and manage devices. While this collection may provide functionality for any CIP devices it has only been tested against Allen Bradley PLCs at this time. This scope of this collection is limited to writing tags and verifying other properties of the PLC device limited to the capabilities of the pycomm3 Python library.
 
 ## Development Environment
 
@@ -74,7 +74,7 @@ Every voice is important. If you have something on your mind, create an issue or
 ## External requirements
 
 <!-- List any external resources the collection depends on, for example minimum versions of an OS, libraries, or utilities. Do not list other Ansible collections here. -->
-
+[Python pycomm3 library](https://github.com/ottowayi/pycomm3)
 ### Supported connections
 <!-- Optional. If your collection supports only specific connection types (such as HTTPAPI, netconf, or others), list them here. -->
 
@@ -85,6 +85,35 @@ Every voice is important. If you have something on your mind, create an issue or
 ## Using this collection
 
 <!--Include some quick examples that cover the most common use cases for your collection content. It can include the following examples of installation and upgrade (change industrial.logix correspondingly):-->
+
+### Verify CIP Identity
+
+```shell
+  ansible-playbook playbooks/verify_cip_identity.yml -i docs/example/inventory.ini 
+```
+
+### Verify Tag Value
+
+```shell
+  ansible-playbook playbooks/verify_valid_tag_value.yml -i docs/example/inventory.ini 
+```
+
+### Verify Firmware Version
+
+```shell
+  ansible-playbook playbooks/verify_firmware_version.yml -i docs/example/inventory.ini 
+```
+### Ensure Tags are what we want them to be
+
+```shell
+  ansible-playbook playbooks/ensure_tags.yml -i docs/example/inventory.ini 
+```
+
+### Do all above tasks
+
+```shell
+  ansible-playbook playbooks/main.yml -i docs/example/inventory.ini 
+```
 
 ### Installing the Collection from Ansible Galaxy
 
@@ -135,3 +164,9 @@ See the [changelog](https://github.com/ansible-collections/industrial.logix/tree
 ## Licensing
 
 [MIT](https://opensource.org/licenses/MIT)
+
+Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
