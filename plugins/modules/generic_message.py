@@ -102,12 +102,10 @@ from ansible.module_utils._text import to_native, to_text, to_bytes
 from ansible_collections.industrial.logix.plugins.module_utils.logix import LogixUtil
 from ansible.module_utils.basic import missing_required_lib
 
-import traceback
 try:
     from pycomm3 import data_types, DataTypes
 except ImportError:
     HAS_PYCOMM3 = False
-    PYCOMM3_IMPORT_ERROR = traceback.format_exc()
 else:
     HAS_PYCOMM3 = True
 
@@ -139,9 +137,8 @@ def main():
 
     if not HAS_PYCOMM3:
         logix_util.module.fail_json(
-            msg=missing_required_lib('pycomm3'),
-            exception=PYCOMM3_IMPORT_ERROR)
-
+            msg=missing_required_lib('pycomm3')
+        )
     # coerce data_type from a description of the data type to the actual
     # object. This is gonna be messy
     dt_arg = module.params["data_type"]
