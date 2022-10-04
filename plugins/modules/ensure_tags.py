@@ -44,7 +44,7 @@ options:
         description:
           - Value to ensure the tag is set to.
         required: true
-        type: str
+        type: raw
 notes:
 - Caution - If another source is simultaneously writing to the same PLC tag
   that Ansible is modifying (including a program in the PLC itself), the task
@@ -88,7 +88,7 @@ def main():
 
     tag_options = dict(
         name=dict(required=True, type="str"),
-        value=dict(requied=True, type="raw"),
+        value=dict(required=True, type="raw"),
     )
 
     argspec = dict(

@@ -4,18 +4,14 @@ __metaclass__ = type
 
 from typing import Type, Tuple
 from ansible_collections.industrial.logix.plugins.module_utils.logix import LogixUtil
-
 from ansible.module_utils.errors import AnsibleValidationError
-try:
-    from pycomm3 import Tag
-except ImportError:
-    raise AnsibleValidationError(
-        "Error> python pycomm3 module required for industrial.logix.logix connection plugin"
-    )
+from ansible.module_utils.six import raise_from
+from ansible.module_utils.basic import missing_required_lib
 
 
 class TagCheck:
     def __init__(self, logix_util: Type[LogixUtil], tag_name: str):
+
         self.logix_util = logix_util
         self.tag_name = tag_name
         self.msg = ""
@@ -44,7 +40,8 @@ class TagCheck:
 
 # can add type validation for plc_tag for all compare statements
 class TagValueCheck:
-    def __init__(self, param_tag_value: any, plc_tag: Type[Tag]):
+    def __init__(self, param_tag_value: any, plc_tag):
+
         if not isinstance(param_tag_value, type(plc_tag.value)):
             raise Exception("Data type mismatch")
 
@@ -62,7 +59,7 @@ class TagValueCheck:
             "ULINT",
         ]
 
-    def update_plc_tag(self, plc_tag: Type[Tag]):
+    def update_plc_tag(self, plc_tag):
         self.plc_tag_value = plc_tag.value
         self.plc_tag_type = plc_tag.type
 
