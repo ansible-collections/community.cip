@@ -1,17 +1,17 @@
 ---
-- name: Test some industrial.logix stuff
+- name: Test some community.cip stuff
   hosts: plc
   gather_facts: false
   tasks:
 #  - name: get tag information
-#    industrial.logix.tag_info:
+#    community.cip.tag_info:
 #    register: tag_info_out
 
 #   - name: set a tag
-#     industrial.logix.ensure_tag:
+#     community.cip.ensure_tag:
 #       name: "modified_by_ansible"
 #       value: True
 
     - name: verify firmware version
-      industrial.logix.ensure_firmware_version:
+      community.cip.ensure_firmware_version:
         version: "33"

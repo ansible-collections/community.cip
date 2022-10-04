@@ -119,7 +119,7 @@ options:
 
 EXAMPLES = """
 - name: Verify CIP identity
-  industrial.logix.verify_cip_identity:
+  community.cip.verify_cip_identity:
     cip_identity:
       vendor_id: "{{ hostvars[inventory_hostname]['vendor_id'] }}"
       device_type: "{{ hostvars[inventory_hostname]['device_type'] }}"
@@ -145,7 +145,7 @@ EXAMPLES = """
 
 
 from ansible.module_utils.basic import AnsibleModule
-from ansible_collections.industrial.logix.plugins.module_utils.logix import LogixUtil
+from ansible_collections.community.cip.plugins.module_utils.logix import LogixUtil
 
 
 def main():

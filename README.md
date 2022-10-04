@@ -1,6 +1,6 @@
-# IN ACTIVE DEVELOPMENT industrial.logix Collection for Ansible
+# IN ACTIVE DEVELOPMENT community.cip Collection for Ansible
 <!-- Add CI and code coverage badges here. Samples included below. -->
-[![CI](https://github.com/ansible-collections/industrial.logix/workflows/CI/badge.svg?event=push)](https://github.com/ansible-collections/industrial.logix/actions) [![Codecov](https://img.shields.io/codecov/c/github/ansible-collections/industrial.logix)](https://codecov.io/gh/ansible-collections/industrial.logix)
+[![CI](https://github.com/ansible-collections/community.cip/workflows/CI/badge.svg?event=push)](https://github.com/ansible-collections/community.cip/actions) [![Codecov](https://img.shields.io/codecov/c/github/ansible-collections/community.cip)](https://codecov.io/gh/ansible-collections/community.cip)
 
 <!-- Describe the collection and why a user would want to use it. What does the collection do? -->
 
@@ -11,13 +11,13 @@ Collection to manage Programmable Logic Controllers (PLC) via the Common Industr
 To use this while developing, run the following commands from within your local directory you pulled to this git repo to in order to symlink this git repo to the appropriate Ansible Collection path
 
 ```shell
-  mkdir -p ~/.ansible/collections/ansible_collections/industrial
-  ln -s $(pwd) ~/.ansible/collections/ansible_collections/industrial/logix
+  mkdir -p ~/.ansible/collections/ansible_collections/community
+  ln -s $(pwd) ~/.ansible/collections/ansible_collections/community/cip
 ```
 
 ## Execution Environment
 
-Execution environments allow for a standardized and containerized environment to run Ansible in. This is used heavily in situations like Ansible Automation Platform. [docs/execution-environment](docs/execution-environment) contains an example execution environment that can be used with the industrial.logix collection. For more information, refer to the [ansible-builder](https://ansible-builder.readthedocs.io/en/stable/) documentation.
+Execution environments allow for a standardized and containerized environment to run Ansible in. This is used heavily in situations like Ansible Automation Platform. [docs/execution-environment](docs/execution-environment) contains an example execution environment that can be used with the community.cip collection. For more information, refer to the [ansible-builder](https://ansible-builder.readthedocs.io/en/stable/) documentation.
 
 ## Code of Conduct
 
@@ -88,7 +88,7 @@ Every voice is important. If you have something on your mind, create an issue or
 
 ## Using this collection
 
-<!--Include some quick examples that cover the most common use cases for your collection content. It can include the following examples of installation and upgrade (change industrial.logix correspondingly):-->
+<!--Include some quick examples that cover the most common use cases for your collection content. It can include the following examples of installation and upgrade (change community.cip correspondingly):-->
 
 ### Verify CIP Identity
 
@@ -124,7 +124,7 @@ Every voice is important. If you have something on your mind, create an issue or
 Before using this collection, you need to install it with the Ansible Galaxy command-line tool:
 
 ```bash
-ansible-galaxy collection install industrial.logix
+ansible-galaxy collection install community.cip
 ```
 
 You can also include it in a `requirements.yml` file and install it with `ansible-galaxy collection install -r requirements.yml`, using the format:
@@ -132,26 +132,26 @@ You can also include it in a `requirements.yml` file and install it with `ansibl
 ```yaml
 ---
 collections:
-  - name: industrial.logix
+  - name: community.cip
 ```
 
 Note that if you install the collection from Ansible Galaxy, it will not be upgraded automatically when you upgrade the `ansible` package. To upgrade the collection to the latest available version, run the following command:
 
 ```bash
-ansible-galaxy collection install industrial.logix --upgrade
+ansible-galaxy collection install community.cip --upgrade
 ```
 
 You can also install a specific version of the collection, for example, if you need to downgrade when something is broken in the latest version (please report an issue in this repository). Use the following syntax to install version `0.1.0`:
 
 ```bash
-ansible-galaxy collection install industrial.logix:==0.1.0
+ansible-galaxy collection install community.cip:==0.1.0
 ```
 
 See [Ansible Using collections](https://docs.ansible.com/ansible/devel/user_guide/collections_using.html) for more details.
 
 ## Release notes
 
-See the [changelog](https://github.com/ansible-collections/industrial.logix/tree/main/CHANGELOG.rst).
+See the [changelog](https://github.com/ansible-collections/community.cip/tree/main/CHANGELOG.rst).
 
 ## More information
 

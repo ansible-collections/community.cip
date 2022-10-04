@@ -62,14 +62,14 @@ notes:
 
 EXAMPLES = """
 - name: Ensure tags have a specific value for program - Tag Playground
-  industrial.logix.ensure_tags:
+  community.cip.ensure_tags:
     program: 'Tag_Playground'
     tags:
       - name: "modified_by_ansible"
         value: False
 
 - name: Ensure tags have a specific value
-  industrial.logix.ensure_tags:
+  community.cip.ensure_tags:
     tags:
       - name: "pi"
         value: 3.14
@@ -77,8 +77,8 @@ EXAMPLES = """
 
 
 from ansible.module_utils.basic import AnsibleModule
-from ansible_collections.industrial.logix.plugins.module_utils.logix import LogixUtil
-from ansible_collections.industrial.logix.plugins.module_utils.tags import (
+from ansible_collections.community.cip.plugins.module_utils.logix import LogixUtil
+from ansible_collections.community.cip.plugins.module_utils.tags import (
     TagCheck,
     TagValueCheck,
 )

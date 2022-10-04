@@ -32,10 +32,10 @@ options:
 
 EXAMPLES = """
 - name: check major firmware revision
-  industrial.logix.ensure_firmware_revision:
+  community.cip.ensure_firmware_revision:
     revision: 33
 - name: check major and minor firmware revision
-  industrial.logix.ensure_firmware_revision:
+  community.cip.ensure_firmware_revision:
     revision: 33.001
 """
 
@@ -45,7 +45,7 @@ import traceback
 
 from ansible.module_utils.basic import AnsibleModule
 from ansible.module_utils._text import to_native, to_text
-from ansible_collections.industrial.logix.plugins.module_utils.logix import LogixUtil
+from ansible_collections.community.cip.plugins.module_utils.logix import LogixUtil
 
 
 def main():
