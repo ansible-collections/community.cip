@@ -47,21 +47,35 @@ options:
     description:
       - attribute ID for the service/class/instance
     required: False
+<<<<<<< HEAD
     default: ""
+=======
+    default: b''
+>>>>>>> main
     type: str
   request_data:
     description:
       - any additional data required for the request
     required: False
+<<<<<<< HEAD
     default: ""
+=======
+    default: None
+>>>>>>> main
     type: str
   data_type:
     description:
       - dict containing discription of the expected return data type
     required: False
+<<<<<<< HEAD
     default: {}
     type: dict
     suboptions:
+=======
+    default: None
+    type: dict
+    options:
+>>>>>>> main
       elementary_type:
         description:
           - elementary data type, choices described here -
@@ -110,6 +124,7 @@ else:
     HAS_PYCOMM3 = True
 
 
+
 def main():
 
     dtspec = dict(
@@ -121,12 +136,21 @@ def main():
         service=dict(required=True, type="str"),
         class_code=dict(required=True, type="str"),
         instance=dict(required=True, type="str"),
+<<<<<<< HEAD
         attribute=dict(required=False, default="", type="str"),
         request_data=dict(required=False, default="", type="str"),
         data_type=dict(
             required=False, default=None, type="dict", options=dtspec
         ),
         name=dict(required=False, default="generic", type="str"),
+=======
+        attribute=dict(required=False, default=b"", type="str"),
+        request_data=dict(required=False, default=None, type="str"),
+        data_type=dict(
+            required=False, default=None, type="dict", options=dtspec
+        ),
+        name=dict(required=False, default=None, type="str"),
+>>>>>>> main
     )
 
     module = AnsibleModule(
@@ -135,10 +159,13 @@ def main():
 
     logix_util = LogixUtil(module)
 
+<<<<<<< HEAD
     if not HAS_PYCOMM3:
         logix_util.module.fail_json(
             msg=missing_required_lib('pycomm3')
         )
+=======
+>>>>>>> main
     # coerce data_type from a description of the data type to the actual
     # object. This is gonna be messy
     dt_arg = module.params["data_type"]
@@ -160,7 +187,11 @@ def main():
 
     # request_data expects a bits-like object, so None (if no argument is supplied) needs to be converted
     request_data = module.params["request_data"]
+<<<<<<< HEAD
     if not request_data:
+=======
+    if request_data is None:
+>>>>>>> main
         request_data = b""
 
     ret = logix_util.plc.generic_message(
@@ -169,7 +200,11 @@ def main():
         ),  # https://stackoverflow.com/a/21669474
         class_code=int(module.params["class_code"], 0),
         instance=int(module.params["instance"], 0),
+<<<<<<< HEAD
         attribute=int(to_bytes(module.params["attribute"]), 0),
+=======
+        attribute=int(module.params["attribute"], 0),
+>>>>>>> main
         request_data=bytes(int(request_data, 0)),
         data_type=data_type,
         name=module.params["name"],
