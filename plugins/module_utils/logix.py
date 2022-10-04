@@ -7,13 +7,11 @@ from ansible.module_utils.basic import AnsibleModule
 from ansible.module_utils.connection import Connection, ConnectionError
 
 try:
-    from pycomm3 import LogixDriver, cip
+    from pycomm3 import LogixDriver, cip, CommError, ResponseError
 
     HAS_PYCOMM3 = True
 except ImportError:
     HAS_PYCOMM3 = False
-
-from pycomm3 import CommError, ResponseError
 
 class LogixUtil(object):
     def __init__(self, module):
