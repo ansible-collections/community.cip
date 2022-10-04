@@ -15,4 +15,3 @@
       - result is not changed
       - result is failed
       - {'"Data type mismatch" in result[msg]'}
-
