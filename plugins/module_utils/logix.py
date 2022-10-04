@@ -26,7 +26,7 @@ class LogixUtil(object):
 
         self.plc = LogixDriver(self.logix_address)
 
-        try: 
+        try:
             self.plc.open()
         except (CommError, ResponseError) as error:
             self.module.fail_json("Failed to open ControlLogix device %s, returned error message: (%s) Make sure this host is a PLC." % (self.logix_address, error))
