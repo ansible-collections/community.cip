@@ -26,7 +26,7 @@ author:
 
 EXAMPLES = """
 - name: Get list of tags
-  industrial.logix.tag_info:
+  community.cip.tag_info:
   register: list_tags_out
 
 - debug: var=list_tags_out
@@ -38,7 +38,7 @@ import traceback
 
 from ansible.module_utils.basic import AnsibleModule
 from ansible.module_utils._text import to_native, to_text
-from ansible_collections.industrial.logix.plugins.module_utils.logix import LogixUtil
+from ansible_collections.community.cip.plugins.module_utils.logix import LogixUtil
 
 
 def main():

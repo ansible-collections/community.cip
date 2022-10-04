@@ -2,10 +2,10 @@
 # The namespace of the collection. This can be a company/brand/organization or product namespace under which all
 # content lives. May only contain alphanumeric lowercase characters and underscores. Namespaces cannot start with
 # underscores or numbers and cannot contain consecutive underscores
-namespace: industrial
+namespace: community
 
 # The name of the collection. Has the same character restrictions as 'namespace'
-name: logix
+name: cip
 
 # The version of the collection. Must be compatible with semantic versioning
 version: 0.0.1
@@ -25,7 +25,7 @@ authors:
 
 ### OPTIONAL but strongly recommended
 # A short summary description of the collection
-description: Collection to automate Rockwell Allen-Bradley ControlLogix Programmable Logic Controllers
+description: Collection to automate Programmable Logic Controllers
 
 # Either a single license or a list of licenses for content inside of a collection. Ansible Galaxy currently only
 # accepts L(SPDX,https://spdx.org/licenses/) licenses. This key is mutually exclusive with 'license_file'
@@ -47,16 +47,16 @@ tags: []
 dependencies: {}
 
 # The URL of the originating SCM repository
-repository: https://github.com/ansible-collections/industrial.logix
+repository: https://github.com/ansible-collections/community.cip
 
 # The URL to any online docs
-documentation: https://github.com/ansible-collections/industrial.logix/README.md
+documentation: https://github.com/ansible-collections/community.cip/README.md
 
 # The URL to the homepage of the collection/project
-homepage: https://github.com/ansible-collections/industrial.logix
+homepage: https://github.com/ansible-collections/community.cip
 
 # The URL to the collection issue tracker
-issues: https://github.com/ansible-collections/industrial.logix/issues
+issues: https://github.com/ansible-collections/community.cip/issues
 
 # A list of file glob-like patterns used to filter any files or directories that should not be included in the build
 # artifact. A pattern is matched from the relative path of the file or directory of the collection directory. This

@@ -1,5 +1,5 @@
 collections:
-  - name: industrial.logix
+  - name: community.cip
   - name: community.general
   - name: ansible.network
   - name: ansible.posix

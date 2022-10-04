@@ -84,7 +84,7 @@ from ansible.plugins.connection import NetworkConnectionBase, ensure_connect
 
 
 # FIXME: Change this to the correct upstream one ASAP
-from ansible_collections.industrial.logix.plugins.plugin_utils.connection_base import (
+from ansible_collections.community.cip.plugins.plugin_utils.connection_base import (
     PersistentConnectionBase,
 )
 
@@ -108,7 +108,7 @@ class Connection(PersistentConnectionBase):
 
         if not HAS_PYCOMM3:
             raise AnsibleConnectionFailure(
-                "Error> python pycomm3 module required for industrial.logix.logix connection plugin"
+                "Error> python pycomm3 module required for community.cip.logix connection plugin"
             )
 
         self.host = self.get_option("host")
