@@ -59,9 +59,9 @@ options:
     description:
       - dict containing discription of the expected return data type
     required: False
-    default: None
+    default: {}
     type: dict
-    options:
+    suboptions:
       elementary_type:
         description:
           - elementary data type, choices described here -
