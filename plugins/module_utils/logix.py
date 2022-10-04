@@ -13,6 +13,7 @@ try:
 except ImportError:
     HAS_PYCOMM3 = False
 
+
 class LogixUtil(object):
     def __init__(self, module):
         self.module = module
@@ -29,7 +30,9 @@ class LogixUtil(object):
         try:
             self.plc.open()
         except (CommError, ResponseError) as error:
-            self.module.fail_json("Failed to open ControlLogix device %s, returned error message: (%s) Make sure this host is a PLC." % (self.logix_address, error))
+            self.module.fail_json(
+                "Failed to open ControlLogix device %s, returned error message: (%s) Make sure this host is a PLC." % (self.logix_address, error)
+            )
 
         if not self.plc.connected:
             self.module.fail_json(
