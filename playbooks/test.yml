@@ -15,5 +15,3 @@
     - name: verify firmware version
       industrial.logix.ensure_firmware_version:
         version: "33"
-
-
