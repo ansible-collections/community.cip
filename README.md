@@ -165,6 +165,10 @@ See the [changelog](https://github.com/ansible-collections/industrial.logix/tree
 * [The Bullhorn (the Ansible Contributor newsletter)](https://us19.campaign-archive.com/home/?u=56d874e027110e35dea0e03c1&id=d6635f5420)
 * [News for Maintainers](https://github.com/ansible-collections/news-for-maintainers)
 
+## Friendly Reminder
+
+PLCs control real world objects that move, spin, and interact with humans. This collection can communicate with PLCs, thus, it can make changes that alter objects in the real world. It is highly recommended to develop and test in a controlled, safe place before atttempting to change or modify any control system running in a production capacity.
+
 ## Licensing
 
 [MIT](https://opensource.org/licenses/MIT)
