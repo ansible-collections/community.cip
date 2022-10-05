@@ -59,21 +59,21 @@ options:
     default: ""
     type: str
   data_type:
-    description: 
+    description:
       - dict containing description of the expected return data type
     required: False
     default: {}
     type: dict
     suboptions:
       elementary_type:
-        description: 
+        description:
           - "elementary data type, choices described here:
             https://docs.pycomm3.dev/en/latest/api_reference/data_types.html#pycomm3.cip.data_types.DataTypes"
         required: True
         type: str
       array_len:
-        description: 
-          - If the data type if an array, the length of the array. Values less 
+        description:
+          - If the data type if an array, the length of the array. Values less
             than 2 denote datatype is not an array
         type: int
         required: False
