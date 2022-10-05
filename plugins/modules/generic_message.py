@@ -23,7 +23,7 @@ description:
       This is intended for experienced developers needing functionality not already covered by the industrial.logix 
       plugin. The functionality of this module is similar to crafting a TCP packet by hand. Typically, this call uses 
       many builtin constants provided by the pycomm3 package, but in this case raw hex or dec values must be used. The
-      lookup tables used by pycomm3 can be found in the follwoing directory: 
+      lookup tables used by pycomm3 can be found in the following directory 
       https://github.com/ottowayi/pycomm3/tree/master/pycomm3/cip
 
 author:
@@ -32,52 +32,52 @@ options:
   service:
     description:
       - service code for the request (single byte)
-      required: True
-      type: str
+    required: True
+    type: str
   class_code:
     description:
       - request object class ID
-      required: True
-      type: str
+    required: True
+    type: str
   instance:
     description:
       - ID for an instance of the class. If set to 0, request class attributes
-      required: True
-      type: str
+    required: True
+    type: str
   attribute:
     description:
       - attribute ID for the service/class/instance
-      required: False
-      default: b''
-      type: str
+    required: False
+    default: b''
+    type: str
   request_data:
     description: 
       - any additional data required for the request
-      required: False
-      default: None
-      type: str
+    required: False
+    default: None
+    type: str
   data_type:
     description: 
-      - dict containing discription of the expected return data type
-      required: False
-      default: None
-      type: dict
-      options:
-        elementary_type:
-          description: elementary data type, choices described here: https://docs.pycomm3.dev/en/latest/api_reference/data_types.html#pycomm3.cip.data_types.DataTypes
-          required: True
-          type: str
-        array_len:
-          description: If the data type if an array, the length of the array. Values less than 2 denote datatype is not an array
-          type: int
-          required: False
-          default: 1
+      - dict containing description of the expected return data type
+    required: False
+    default: None
+    type: dict
+    options:
+      elementary_type:
+        description: elementary data type, choices described here https://docs.pycomm3.dev/en/latest/api_reference/data_types.html#pycomm3.cip.data_types.DataTypes
+        required: True
+        type: str
+      array_len:
+        description: If the data type if an array, the length of the array. Values less than 2 denote datatype is not an array
+        type: int
+        required: False
+        default: 1
   name:
     description:
       - return Tag.Tag value, arbitrary but can be for tracking returned Tags
-      required: False
-      default: 'generic'
-      type: str
+    required: False
+    default: 'generic'
+    type: str
 
 """
 
@@ -172,4 +172,3 @@ def main():
 
 if __name__ == "__main__":
     main()
-
