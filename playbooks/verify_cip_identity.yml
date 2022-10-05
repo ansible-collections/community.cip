@@ -4,7 +4,7 @@
   gather_facts: false
   tasks:
   - name: Verify CIP identity
-    industrial.logix.verify_cip_identity:
+    community.cip.verify_cip_identity:
       cip_identity:
         vendor_id: "{{ hostvars[inventory_hostname]['vendor_id'] }}"
         device_type: "{{ hostvars[inventory_hostname]['device_type'] }}"

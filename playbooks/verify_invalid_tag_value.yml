@@ -1,6 +1,6 @@
 ---
 - name: 'Set {{ tag }} to {{ item }} for program: {{ program }}'
-  industrial.logix.ensure_tags:
+  community.cip.ensure_tags:
     program: '{{ program }}'
     tags:
       - name: '{{ tag }}'

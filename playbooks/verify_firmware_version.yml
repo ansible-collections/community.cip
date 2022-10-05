@@ -4,7 +4,7 @@
   gather_facts: false
   tasks:
   - name: Ensure firmware is at a specific version
-    industrial.logix.ensure_firmware_version:
+    community.cip.ensure_firmware_version:
       revision: "{{ hostvars[inventory_hostname]['revision'] }}"
     register: ensure_firmware_version_out
 

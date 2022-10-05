@@ -116,7 +116,7 @@ import traceback
 
 from ansible.module_utils.basic import AnsibleModule
 from ansible.module_utils._text import to_native, to_text, to_bytes
-from ansible_collections.industrial.logix.plugins.module_utils.logix import LogixUtil
+from ansible_collections.community.cip.plugins.module_utils.logix import LogixUtil
 from ansible.module_utils.basic import missing_required_lib
 
 try:

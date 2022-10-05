@@ -19,7 +19,7 @@ class LogixUtil(object):
         self.module = module
 
         if not HAS_PYCOMM3:
-            self.module.fail_json("Python module pycomm3 required for industrial.logix")
+            self.module.fail_json("Python module pycomm3 required for community.cip")
 
         self.connection = Connection(self.module._socket_path)
         self.logix_address = self.connection.get_option("host")
