@@ -19,12 +19,15 @@ DOCUMENTATION = """
 module: generic_message
 short_description: Craft and send a custom "generic" CIP message
 description:
-    - A thin abstraction of the pycomm3 generic_message() API call. Connection
-      related arguments are handled by ansible.
-    - This is intended for experienced developers needing functionality not
-      already covered by the plugin. Think similar to crafting a TCP packet by
-      hand. Typically, this call uses many builtin constants provided by the
-      pycomm3 package, but in this case raw hex or dec values must be used.
+    - "A thin abstraction of the pycomm3 generic_message() API call. Connection
+      related arguments are handled by ansible. This is intended for
+      experienced developers needing functionality not already covered by the
+      industrial.logix plugin. The functionality of this module is similar to
+      crafting a TCP packet by hand. Typically, this call uses many builtin
+      constants provided by the pycomm3 package, but in this case raw hex or
+      dec values must be used. The lookup tables used by pycomm3 can be found
+      in the following directory:
+      https://github.com/ottowayi/pycomm3/tree/master/pycomm3/cip"
 author:
 - Aaron Neustedter (@aaron97neu)
 options:
@@ -57,15 +60,15 @@ options:
     type: str
   data_type:
     description:
-      - dict containing discription of the expected return data type
+      - dict containing description of the expected return data type
     required: False
     default: {}
     type: dict
     suboptions:
       elementary_type:
         description:
-          - elementary data type, choices described here -
-            https://docs.pycomm3.dev/en/latest/api_reference/data_types.html#pycomm3.cip.data_types.DataTypes
+          - "elementary data type, choices described here:
+            https://docs.pycomm3.dev/en/latest/api_reference/data_types.html#pycomm3.cip.data_types.DataTypes"
         required: True
         type: str
       array_len:
@@ -85,12 +88,26 @@ options:
 """
 
 EXAMPLES = """
-- name: check major firmware revision
-  community.cip.ensure_firmware_revision:
-    revision: 33
-- name: check major and minor firmware revision
-  community.cip.ensure_firmware_revision:
-    revision: 33.001
+- name: Get MAC address of EN2T device
+  industrial.logix.generic_message:
+    service: 0x0E
+    class_code: 0xF6
+    instance: 1
+    attribute: 3
+    data_type:
+      elementary_type: USINT
+      array_len: 6
+
+- name: Find the IP Setting configuration type. 0b_0000 = 'static', 0b_0001 = 'BOOTP' 0b_0010 = 'DHCP'
+  industrial.logix.generic_message:
+    service: 0x0E
+    class_code: 0xf5
+    instance: 1
+    attribute: 3
+    data_type:
+      elementary_type: INT
+      array_len: -1
+    name: 'IP_config'
 """
 
 
@@ -146,7 +163,7 @@ def main():
     if dt_arg is not None:
         if DataTypes.get(dt_arg["elementary_type"]) is None:
             module.fail_json(
-                f'elementart_type {dt_arg["elementary_type"]} is not one of',
+                f'elementary_type {dt_arg["elementary_type"]} is not one of',
                 f' allowed data types: {DataTypes.attributes}'
             )
 
@@ -166,7 +183,7 @@ def main():
     ret = logix_util.plc.generic_message(
         service=int(
             module.params["service"], 0
-        ),  # https://stackoverflow.com/a/21669474
+        ),  # int(something, 0) -> https://stackoverflow.com/a/21669474
         class_code=int(module.params["class_code"], 0),
         instance=int(module.params["instance"], 0),
         attribute=int(to_bytes(module.params["attribute"]), 0),

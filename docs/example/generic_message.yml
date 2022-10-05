@@ -1,0 +1,25 @@
+---
+- name: Test tags have a specific value
+  hosts: EN2T
+  gather_facts: false
+  tasks:
+  - name: Get MAC address of EN2T device
+    industrial.logix.generic_message:
+      service: 0x0E
+      class_code: 0xF6
+      instance: 1
+      attribute: 3
+      data_type:
+        elementary_type: USINT
+        array_len: 6
+
+  - name: Find the IP Setting configuration type. 0b_0000 = 'static', 0b_0001 = 'BOOTP' 0b_0010 = 'DHCP'
+    industrial.logix.generic_message:
+      service: 0x0E
+      class_code: 0xf5
+      instance: 1
+      attribute: 3
+      data_type:
+        elementary_type: INT
+        array_len: -1
+      name: 'IP_config'
