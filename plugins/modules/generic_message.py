@@ -19,7 +19,7 @@ DOCUMENTATION = """
 module: generic_message
 short_description: Craft and send a custom "generic" CIP message
 description:
-    - A thin abstraction of the pycomm3 generic_message() API call. Connection
+    - "A thin abstraction of the pycomm3 generic_message() API call. Connection
       related arguments are handled by ansible. This is intended for
       experienced developers needing functionality not already covered by the
       industrial.logix plugin. The functionality of this module is similar to
@@ -27,7 +27,7 @@ description:
       constants provided by the pycomm3 package, but in this case raw hex or
       dec values must be used. The lookup tables used by pycomm3 can be found
       in the following directory:
-      https://github.com/ottowayi/pycomm3/tree/master/pycomm3/cip
+      https://github.com/ottowayi/pycomm3/tree/master/pycomm3/cip"
 author:
 - Aaron Neustedter (@aaron97neu)
 options:
@@ -67,8 +67,8 @@ options:
     suboptions:
       elementary_type:
         description: 
-          - elementary data type, choices described here 
-            https://docs.pycomm3.dev/en/latest/api_reference/data_types.html#pycomm3.cip.data_types.DataTypes
+          - "elementary data type, choices described here:
+            https://docs.pycomm3.dev/en/latest/api_reference/data_types.html#pycomm3.cip.data_types.DataTypes"
         required: True
         type: str
       array_len:
