@@ -20,13 +20,13 @@ module: generic_message
 short_description: Craft and send a custom "generic" CIP message
 description:
     - A thin abstraction of the pycomm3 generic_message() API call. Connection
-      related arguments are handled by ansible. This is intended for 
+      related arguments are handled by ansible. This is intended for
       experienced developers needing functionality not already covered by the
       industrial.logix plugin. The functionality of this module is similar to
-      crafting a TCP packet by hand. Typically, this call uses many builtin 
-      constants provided by the pycomm3 package, but in this case raw hex or 
+      crafting a TCP packet by hand. Typically, this call uses many builtin
+      constants provided by the pycomm3 package, but in this case raw hex or
       dec values must be used. The lookup tables used by pycomm3 can be found
-      in the following directory: 
+      in the following directory:
       https://github.com/ottowayi/pycomm3/tree/master/pycomm3/cip
 author:
 - Aaron Neustedter (@aaron97neu)
