@@ -24,6 +24,54 @@ author:
 - Chris Santiago (@resoluteCoder)
 """
 
+RETURN = r'''
+cip:
+    description: information about the controller
+    returned: when supported
+    type: dict
+    sample: {
+            "keyswitch": "REMOTE RUN",
+            "modules": {},
+            "name": "Controller Name",
+            "product_code": 94,
+            "product_name": "1756-L73/B LOGIX5573",
+            "product_type": "Programmable Logic Controller",
+            "programs": {
+                "Program1": {
+                    "instance_id": 1,
+                    "routines": []
+                },
+                "Program2": {
+                    "instance_id": 2,
+                    "routines": []
+                }
+            },
+            "revision": {
+                "major": 34,
+                "minor": 11
+            },
+            "serial": "00000000",
+            "status": {
+                "configured": false,
+                "debug": false,
+                "keyswitch": "Remote Mode",
+                "major_recoverable_fault": false,
+                "major_unrecoverable_fault": false,
+                "minor_recoverable_fault": false,
+                "minor_unrecoverable_fault": false,
+                "mode": "At least one I/O connection in run mode",
+                "owned": false,
+                "transitioning": false
+            },
+            "tasks": {
+                "MainTask": {
+                    "instance_id": 2
+                }
+            },
+            "vendor": "Rockwell Automation/Allen-Bradley"
+        }
+'''
+
 EXAMPLES = """
 - name: Gather cip facts
   community.cip.cip_facts:
@@ -52,7 +100,7 @@ def main():
     cip_facts['cip']['status'] = status_text
 
     module.exit_json(
-        msg="cip facts gather", ansible_facts=cip_facts
+        msg="cip facts gathered successfully", ansible_facts=cip_facts
     )
 
 

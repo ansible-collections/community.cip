@@ -90,6 +90,12 @@ Every voice is important. If you have something on your mind, create an issue or
 
 <!--Include some quick examples that cover the most common use cases for your collection content. It can include the following examples of installation and upgrade (change community.cip correspondingly):-->
 
+### Gather CIP Facts
+
+```shell
+  ansible-playbook playbooks/cip_facts.yml -i docs/example/inventory.ini 
+```
+
 ### Verify CIP Identity
 
 ```shell
