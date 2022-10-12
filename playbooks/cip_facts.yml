@@ -1,0 +1,6 @@
+---
+- name: Gather cip facts
+  hosts: plc
+  tasks:
+  - name: Gather cip facts
+    community.cip.cip_facts:
