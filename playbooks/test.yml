@@ -12,6 +12,6 @@
 #       name: "modified_by_ansible"
 #       value: True
 
-    - name: verify firmware version
+    - name: Verify firmware version
       community.cip.ensure_firmware_version:
-        version: "33"
+        revision: "{{ hostvars[inventory_hostname]['revision'] }}"
