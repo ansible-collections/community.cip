@@ -112,7 +112,6 @@ class Connection(PersistentConnectionBase):
             )
 
         self.host = self.get_option("host")
-        self._sub_plugin = {"type": "external"}
 
     def _connect(self):
         if not self.connected:
