@@ -2,7 +2,7 @@
 # (c) 2015 Toshio Kuratomi <tkuratomi@ansible.com>
 # (c) 2017, Peter Sprygada <psprygad@redhat.com>
 # (c) 2017 Ansible Project
-# GNU General Public License v3.0+ (see LICENSE or https://www.gnu.org/licenses/gpl-3.0.txt)
+# GNU General Public License v3.0+ (see https://www.gnu.org/licenses/gpl-3.0.txt)
 # SPDX-License-Identifier: GPL-3.0-or-later
 
 
