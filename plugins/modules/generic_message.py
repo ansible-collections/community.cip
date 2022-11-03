@@ -179,6 +179,8 @@ def main():
     request_data = module.params["request_data"]
     if not request_data:
         request_data = b""
+    else:
+        request_data = bytes(int(request_data, 0)),
 
     ret = logix_util.plc.generic_message(
         service=int(
@@ -187,7 +189,7 @@ def main():
         class_code=int(module.params["class_code"], 0),
         instance=int(module.params["instance"], 0),
         attribute=int(to_bytes(module.params["attribute"]), 0),
-        request_data=bytes(int(request_data, 0)),
+        request_data=request_data,
         data_type=data_type,
         name=module.params["name"],
         connected=False,  # TODO: Double check all connection stuff
