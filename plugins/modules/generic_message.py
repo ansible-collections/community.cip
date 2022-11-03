@@ -141,7 +141,7 @@ def main():
         attribute=dict(required=False, default="", type="str"),
         request_data=dict(required=False, default="", type="str"),
         data_type=dict(
-            required=False, default=None, type="dict", options=dtspec
+            required=False, default={}, type="dict", options=dtspec
         ),
         name=dict(required=False, default="generic", type="str"),
     )
@@ -160,7 +160,7 @@ def main():
     # object. This is gonna be messy
     dt_arg = module.params["data_type"]
     data_type = None
-    if dt_arg is not None:
+    if dt_arg is not {}:
         if DataTypes.get(dt_arg["elementary_type"]) is None:
             module.fail_json(
                 f'elementary_type {dt_arg["elementary_type"]} is not one of',
