@@ -1,0 +1,12 @@
+ancestor: null
+releases:
+  0.0.1:
+    release_date: '2022-10-12'
+  1.0.0:
+    release_date: '2022-10-17'
+    changes:
+      release_summary: Initial release
+  1.0.1:
+    release_date: '2022-10-17'
+    changes:
+      release_summary: Fix nonetype connection issue
