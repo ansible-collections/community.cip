@@ -73,18 +73,11 @@ options:
       - name: ansible_persistent_log_messages
 """
 
-from io import BytesIO
-import importlib
 
 from ansible.errors import AnsibleConnectionFailure
-from ansible.module_utils.six.moves.urllib.error import HTTPError, URLError
-from ansible.module_utils.urls import open_url
-from ansible.playbook.play_context import PlayContext
-from ansible.plugins.connection import NetworkConnectionBase, ensure_connect
 
 
-# FIXME: Change this to the correct upstream one ASAP
-from ansible_collections.community.cip.plugins.plugin_utils.connection_base import (
+from ansible_collections.ansible.utils.plugins.plugin_utils.connection_base import (
     PersistentConnectionBase,
 )
 
