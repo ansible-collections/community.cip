@@ -141,7 +141,7 @@ def main():
         attribute=dict(required=False, default="", type="str"),
         request_data=dict(required=False, default="", type="str"),
         data_type=dict(
-            required=False, default=None, type="dict", options=dtspec
+            required=False, default={}, type="dict", options=dtspec
         ),
         name=dict(required=False, default="generic", type="str"),
     )
@@ -160,7 +160,7 @@ def main():
     # object. This is gonna be messy
     dt_arg = module.params["data_type"]
     data_type = None
-    if dt_arg is not None:
+    if dt_arg is not {}:
         if DataTypes.get(dt_arg["elementary_type"]) is None:
             module.fail_json(
                 f'elementary_type {dt_arg["elementary_type"]} is not one of',
@@ -179,6 +179,8 @@ def main():
     request_data = module.params["request_data"]
     if not request_data:
         request_data = b""
+    else:
+        request_data = bytes(int(request_data, 0)),
 
     ret = logix_util.plc.generic_message(
         service=int(
@@ -187,7 +189,7 @@ def main():
         class_code=int(module.params["class_code"], 0),
         instance=int(module.params["instance"], 0),
         attribute=int(to_bytes(module.params["attribute"]), 0),
-        request_data=bytes(int(request_data, 0)),
+        request_data=request_data,
         data_type=data_type,
         name=module.params["name"],
         connected=False,  # TODO: Double check all connection stuff
