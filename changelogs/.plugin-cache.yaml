@@ -1,0 +1,51 @@
+objects:
+  role: {}
+plugins:
+  become: {}
+  cache: {}
+  callback: {}
+  cliconf: {}
+  connection:
+    logix:
+      description: Plugin to directly interact with Rockwell Allen-Bradley ControlLogix
+      name: logix
+      version_added: null
+  httpapi: {}
+  inventory: {}
+  lookup: {}
+  module:
+    cip_facts:
+      description: Gathers cip facts from plc
+      name: cip_facts
+      namespace: ''
+      version_added: null
+    ensure_firmware_version:
+      description: Ensure firmware is a specific revision or fail
+      name: ensure_firmware_version
+      namespace: ''
+      version_added: null
+    ensure_tags:
+      description: Ensure tags have a specific value
+      name: ensure_tags
+      namespace: ''
+      version_added: null
+    generic_message:
+      description: Craft and send a custom "generic" CIP message
+      name: generic_message
+      namespace: ''
+      version_added: null
+    tag_info:
+      description: Pull information about current tags as set on the ControlLogix
+      name: tag_info
+      namespace: ''
+      version_added: null
+    verify_cip_identity:
+      description: Verify CIP identity of PLC
+      name: verify_cip_identity
+      namespace: ''
+      version_added: null
+  netconf: {}
+  shell: {}
+  strategy: {}
+  vars: {}
+version: 1.0.1
