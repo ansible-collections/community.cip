@@ -1,0 +1,35 @@
+---
+- name: Test ensure_firmware_revision module
+  hosts: all #ControlLogix-L85E
+  gather_facts: true
+  strategy: free
+  tasks:
+    - name: Gather CIP facts
+      community.cip.cip_facts:
+
+    - name: Test correct revision pulled from ansible_facts
+      ansible.builtin.include_tasks: verify_valid_firmware_version_value.yml
+      loop:
+        - '{{ ansible_facts["cip"]["revision"]["major"] }}' # Raw major revision straight from ansible_facts
+        - '00{{ ansible_facts["cip"]["revision"]["major"] }}' # Add some leading zeros
+        - '{{ ansible_facts["cip"]["revision"]["major"] }}.{{ansible_facts["cip"]["revision"]["minor"]}}' # Full revision
+
+    - name: Test with invalid entries
+      ansible.builtin.include_tasks: verify_invalid_firmware_version_value.yml
+      loop:
+        - Pizza
+        - 1.1.1
+        - sem.ver.better
+        - '{{ ansible_facts["cip"]["revision"]["major"] }}.{{ansible_facts["cip"]["revision"]["minor"]}}.0' # Coulda woulda shoulda
+        - -1
+        - \'0034\'
+        - '-{{ ansible_facts["cip"]["revision"]["major"] }}' # In a parallel (inverse?) universe
+
+
+    - name: Test incorrect revision based on ansible_facts
+      ansible.builtin.include_tasks: verify_incorrect_firmware_version_value.yml
+      loop:
+        - '1{{ ansible_facts["cip"]["revision"]["major"] }}' # In a hundred years...
+        - '1{{ ansible_facts["cip"]["revision"]["major"] }}.{{ansible_facts["cip"]["revision"]["minor"]}}' # Full revision
+        - '{{ ansible_facts["cip"]["revision"]["major"] }}.1{{ansible_facts["cip"]["revision"]["minor"]}}' # Full revision
+        - '1{{ ansible_facts["cip"]["revision"]["major"] }}.1{{ansible_facts["cip"]["revision"]["minor"]}}' # Full revision
