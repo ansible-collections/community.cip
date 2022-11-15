@@ -58,12 +58,8 @@ jobs:
         with:
           ansible-core-version: ${{ matrix.ansible }}
           testing-type: sanity
-          # OPTIONAL If your sanity tests require code
-          # from other collections, install them like this
-          # test-deps: >-
-          #   ansible.netcommon
-          #   ansible.utils
-      - run: pip install pycomm3
+          test-deps: >-
+            ansible.utils
 
 ###
 # Unit tests (OPTIONAL)
