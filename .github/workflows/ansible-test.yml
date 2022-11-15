@@ -50,6 +50,8 @@ jobs:
         # - milestone
     runs-on: ubuntu-latest
     steps:
+      - run: pip install pycomm3
+      - run: ansible-galaxy collection install ansible.utils
       # Run sanity tests inside a Docker container.
       # The docker container has all the pinned dependencies that are
       # required and all Python versions Ansible supports.
@@ -63,8 +65,6 @@ jobs:
           # test-deps: >-
           #   ansible.netcommon
           #   ansible.utils
-      - run: pip install pycomm3
-      - run: ansible-galaxy collection install ansible.utils
 
 ###
 # Unit tests (OPTIONAL)
