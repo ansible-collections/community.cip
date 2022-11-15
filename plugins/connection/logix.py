@@ -105,6 +105,7 @@ class Connection(PersistentConnectionBase):
 
     def __init__(self, play_context, new_stdin, *args, **kwargs):
         super(Connection, self).__init__(play_context, new_stdin, *args, **kwargs)
+        self._sub_plugin = {}
 
         if not HAS_PYCOMM3:
             raise AnsibleConnectionFailure(
