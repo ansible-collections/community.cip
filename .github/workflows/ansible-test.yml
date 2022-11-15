@@ -64,6 +64,7 @@ jobs:
           #   ansible.netcommon
           #   ansible.utils
       - run: pip install pycomm3
+      - run: ansible-galaxy collection install ansible.utils
 
 ###
 # Unit tests (OPTIONAL)
