@@ -1,0 +1,15 @@
+---
+- name: 'Validate valid firmware version {{ item }}'
+  community.cip.ensure_firmware_version:
+    revision: '{{ item }}'
+  register: result
+  ignore_errors: True
+- debug: var=result
+
+- name: assert that module did not fail due to data type checking.
+  assert:
+    that:
+      - {'"Controller revision not specified properly" not in result[msg]'}
+      - result is not changed
+      - result is not failed
+      - result is success 

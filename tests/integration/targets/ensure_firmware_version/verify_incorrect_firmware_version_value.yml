@@ -1,0 +1,13 @@
+---
+- name: 'Validate incorrect firmware version {{ item }} is correctly handled'
+  community.cip.ensure_firmware_version:
+    revision: '{{ item }}'
+  register: result
+  ignore_errors: True
+- debug: var=result
+
+- name: assert that module is failed due to firmware version checking 
+  assert:
+    that:
+      - result is failed
+      - {'"Controller revision not specified properly" not in result[msg]'} # That message only appears if the formatting was wrong, not the version itself
