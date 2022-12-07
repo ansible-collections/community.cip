@@ -40,14 +40,17 @@ from ansible_collections.community.cip.plugins.module_utils.logix import LogixUt
 
 
 def main():
-    module = AnsibleModule(
-        argument_spec=dict(),
-        supports_check_mode=True
-    )
+    module = AnsibleModule(argument_spec=dict(), supports_check_mode=True)
 
     logix_util = LogixUtil(module)
 
-    all_available_attr = logix_util.plc.generic_message(service=logix_util.cip.Services.get_attribute_single, class_code=0x5D, instance=0, attribute=0, data_type=logix_util.cip.UINT)  # noqa yaml[line-length]
+    all_available_attr = logix_util.plc.generic_message(
+        service=logix_util.cip.Services.get_attribute_single,
+        class_code=0x5D,
+        instance=0,
+        attribute=0,
+        data_type=logix_util.cip.UINT,
+    )  # noqa yaml[line-length]
 
     msg = []
 
@@ -56,9 +59,23 @@ def main():
     else:
         msg.append("CIP Security is supported")
 
-        profiles = logix_util.plc.generic_message(service=logix_util.cip.Services.get_attribute_single, class_code=0x5D, instance=1, attribute=2, data_type=logix_util.cip.WORD, name='Security Profiles')  # noqa yaml[line-length]
+        profiles = logix_util.plc.generic_message(
+            service=logix_util.cip.Services.get_attribute_single,
+            class_code=0x5D,
+            instance=1,
+            attribute=2,
+            data_type=logix_util.cip.WORD,
+            name="Security Profiles",
+        )
 
-        configured = logix_util.plc.generic_message(service=logix_util.cip.Services.get_attribute_single, class_code=0x5D, instance=1, attribute=3, data_type=logix_util.cip.WORD, name='Security Profiles Configured')  # noqa yaml[line-length]
+        configured = logix_util.plc.generic_message(
+            service=logix_util.cip.Services.get_attribute_single,
+            class_code=0x5D,
+            instance=1,
+            attribute=3,
+            data_type=logix_util.cip.WORD,
+            name="Security Profiles Configured",
+        )
 
         security_profiles = {
             0: "Reserved",
@@ -67,11 +84,13 @@ def main():
             3: "CIP User Authentication Profile",
             4: "Resource-Constrained CIP Security Profile",
             5: "EtherNet/IP Pull Model Profile",
-            **{i: "Reserved" for i in range(6, 15)}
+            **{i: "Reserved" for i in range(6, 15)},
         }
 
         for i in range(15):
-            msg.append(f'Security profile - {security_profiles[i]}: {"not " if not profiles[1][i] else ""}available and {"not " if not configured[1][i] else ""}configured')  # noqa yaml[line-length]
+            msg.append(
+                f'Security profile - {security_profiles[i]}: {"not " if not profiles[1][i] else ""}available and {"not " if not configured[1][i] else ""}configured'
+            )
 
     module.exit_json(msg=msg)
 
