@@ -89,7 +89,7 @@ def main():
 
         for i in range(15):
             msg.append(
-                f'Security profile - {security_profiles[i]}: {"not " if not profiles[1][i] else ""}available and {"not " if not configured[1][i] else ""}configured'
+                f'Security profile - {security_profiles[i]}: {"not " if not profiles[1][i] else ""}available and {"not " if not configured[1][i] else ""}configured'  # noqa yaml[line-length]
             )
 
     module.exit_json(msg=msg)
