@@ -21,17 +21,17 @@ short_description: Verify CIP Security is available and/or enabled
 description:
   - Verify CIP Security is available, which security profiles and are they configured
 author:
-- Matthew Sandoval (@matoval)
+  - Matthew Sandoval (@matoval)
 """
 
 EXAMPLES = """
 - name: Verify CIP Security
-    community.cip.verify_cip_security:
-    register: cip_security
+  community.cip.verify_cip_security:
+  register: cip_security
 
-  - name: Debug
-    ansible.builtin.debug:
-      var: cip_security
+- name: Debug
+  ansible.builtin.debug:
+    var: cip_security
 """
 
 
