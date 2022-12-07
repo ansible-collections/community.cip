@@ -1,0 +1,12 @@
+---
+- name: Verify CIP Security
+  hosts: plc
+  gather_facts: false
+  tasks:
+  - name: Verify CIP Security
+    community.cip.verify_cip_security:
+    register: cip_security
+
+  - name: Debug
+    ansible.builtin.debug:
+      var: cip_security

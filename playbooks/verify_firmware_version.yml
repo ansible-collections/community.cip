@@ -8,4 +8,6 @@
       revision: "{{ hostvars[inventory_hostname]['revision'] }}"
     register: ensure_firmware_version_out
 
-  - debug: var=ensure_firmware_version_out
+  - name: Debug
+    ansible.builtin.debug:
+      var: ensure_firmware_version_out
