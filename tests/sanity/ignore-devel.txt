@@ -8,3 +8,4 @@ plugins/modules/generic_message.py validate-modules:missing-gplv3-license # This
 plugins/modules/tag_info.py validate-modules:missing-gplv3-license # This collection is MIT Licensed
 plugins/modules/verify_cip_identity.py validate-modules:missing-gplv3-license # This collection is MIT Licensed
 plugins/modules/verify_cip_identity.py validate-modules:no-log-needed # not a value that needs no_log
+plugins/modules/verify_cip_security.py validate-modules:missing-gplv3-license # This collection is MIT Licensed

@@ -47,8 +47,7 @@ def main():
 
     logix_util = LogixUtil(module)
 
-    all_available_attr = logix_util.plc.generic_message(service=logix_util.cip.Services.get_attribute_single,
-                                                        class_code=0x5D, instance=0, attribute=0, data_type=logix_util.cip.UINT)
+    all_available_attr = logix_util.plc.generic_message(service=logix_util.cip.Services.get_attribute_single, class_code=0x5D, instance=0, attribute=0, data_type=logix_util.cip.UINT)  # noqa yaml[line-length]
 
     msg = []
 
@@ -57,13 +56,9 @@ def main():
     else:
         msg.append("CIP Security is supported")
 
-        profiles = logix_util.plc.generic_message(service=logix_util.cip.Services.get_attribute_single,
-                                                  class_code=0x5D, instance=1, attribute=2,
-                                                  data_type=logix_util.cip.WORD, name='Security Profiles')
+        profiles = logix_util.plc.generic_message(service=logix_util.cip.Services.get_attribute_single, class_code=0x5D, instance=1, attribute=2, data_type=logix_util.cip.WORD, name='Security Profiles')  # noqa yaml[line-length]
 
-        configured = logix_util.plc.generic_message(service=logix_util.cip.Services.get_attribute_single,
-                                                    class_code=0x5D, instance=1, attribute=3,
-                                                    data_type=logix_util.cip.WORD, name='Security Profiles Configured')
+        configured = logix_util.plc.generic_message(service=logix_util.cip.Services.get_attribute_single, class_code=0x5D, instance=1, attribute=3, data_type=logix_util.cip.WORD, name='Security Profiles Configured')  # noqa yaml[line-length]
 
         security_profiles = {
             0: "Reserved",

@@ -3,12 +3,12 @@
   hosts: ControlLogix-L85E
   gather_facts: false
   tasks:
-  - name: Ensure tags have a specific value for Tag Playground 
+  - name: Ensure tags have a specific value for Tag Playground
     community.cip.ensure_tags:
       program: 'Tag_Playground'
       tags:
         - name: "modified_by_ansible"
-          value: False
+          value: false
   - name: Ensure tags have a specific value for Sine Wave Generator
     community.cip.ensure_tags:
       program: 'Sine_Wave_Generator'
