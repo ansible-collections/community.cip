@@ -9,9 +9,9 @@
         program: Tag_Playground
         tag: rw_BOOL
       loop:
-        - False
-        - True
-        - True
+        - false
+        - true
+        - true
 
     - name: Test BOOL tag with invalid value
       ansible.builtin.include_tasks: verify_invalid_tag_value.yml
@@ -41,7 +41,7 @@
       loop:
         - Pizza
         - 3.14
-        - True
+        - true
 
     - name: Test DINT value tag
       ansible.builtin.include_tasks: verify_valid_tag_value.yml
@@ -60,7 +60,7 @@
         tag: rw_DINT
       loop:
         - Pizza
-        - True
+        - true
 
     - name: Test STRING value tag
       ansible.builtin.include_tasks: verify_valid_tag_value.yml
@@ -80,7 +80,7 @@
       loop:
         - 5
         - 3.14
-        - True
+        - true
 
     - name: Test REAL value tag
       ansible.builtin.include_tasks: verify_valid_tag_value.yml
@@ -99,5 +99,5 @@
         program: Tag_Playground
         tag: rw_REAL
       loop:
-        - True
+        - true
         - 'good morning'

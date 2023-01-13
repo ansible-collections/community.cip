@@ -3,7 +3,7 @@
   community.cip.ensure_firmware_version:
     revision: '{{ item }}'
   register: result
-  ignore_errors: True
+  ignore_errors: true
 - debug: var=result
 
 - name: assert that module is failed due to firmware version checking
