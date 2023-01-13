@@ -6,7 +6,7 @@
       - name: '{{ tag }}'
         value: '{{ item }}'
   register: result
-  ignore_errors: True
+  ignore_errors: true
 - debug: var=result
 
 - name: assert that value is unchanged and failed due to mismatch

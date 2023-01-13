@@ -16,11 +16,11 @@ readme: README.md
 # A list of the collection's content authors. Can be just the name or in the format 'Full Name <email> (url)
 # @nicks:irc/im.site#channel'
 authors:
-- Adam Miller <admiller@redhat.com>
-- Josh Swanson <jswanson@redhat.com>
-- Matthew Sandoval <msandoval@redhat.com>
-- Christopher Santiago <csantiago@redhat.com>
-- Aaron Neustedter <AJNeuste@ra.rockwell.com>
+  - Adam Miller <admiller@redhat.com>
+  - Josh Swanson <jswanson@redhat.com>
+  - Matthew Sandoval <msandoval@redhat.com>
+  - Christopher Santiago <csantiago@redhat.com>
+  - Aaron Neustedter <AJNeuste@ra.rockwell.com>
 
 
 ### OPTIONAL but strongly recommended

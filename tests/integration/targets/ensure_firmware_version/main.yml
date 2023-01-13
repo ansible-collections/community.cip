@@ -1,6 +1,6 @@
 ---
 - name: Test ensure_firmware_revision module
-  hosts: all #ControlLogix-L85E
+  hosts: all # ControlLogix-L85E
   gather_facts: true
   strategy: free
   tasks:
