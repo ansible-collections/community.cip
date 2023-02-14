@@ -82,6 +82,8 @@ from ansible_collections.ansible.utils.plugins.plugin_utils.connection_base impo
 )
 
 try:
+    # We don't use this import beyond checking that it exists, inform pylint of such
+    # pylint: disable-next=unused-import
     from pycomm3 import LogixDriver
 
     HAS_PYCOMM3 = True

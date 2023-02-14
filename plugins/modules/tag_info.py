@@ -33,11 +33,7 @@ EXAMPLES = """
 """
 
 
-import os
-import traceback
-
 from ansible.module_utils.basic import AnsibleModule
-from ansible.module_utils._text import to_native, to_text
 from ansible_collections.community.cip.plugins.module_utils.logix import LogixUtil
 
 

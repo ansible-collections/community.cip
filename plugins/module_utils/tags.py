@@ -4,9 +4,6 @@ __metaclass__ = type
 
 from typing import Type, Tuple
 from ansible_collections.community.cip.plugins.module_utils.logix import LogixUtil
-from ansible.module_utils.errors import AnsibleValidationError
-from ansible.module_utils.six import raise_from
-from ansible.module_utils.basic import missing_required_lib
 
 
 class TagCheck:
