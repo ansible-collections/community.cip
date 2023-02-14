@@ -111,11 +111,8 @@ EXAMPLES = """
 """
 
 
-import os
-import traceback
-
 from ansible.module_utils.basic import AnsibleModule
-from ansible.module_utils._text import to_native, to_text, to_bytes
+from ansible.module_utils._text import to_bytes
 from ansible_collections.community.cip.plugins.module_utils.logix import LogixUtil
 from ansible.module_utils.basic import missing_required_lib
 
@@ -194,7 +191,7 @@ def main():
         name=module.params["name"],
         connected=False,  # TODO: Double check all connection stuff
         unconnected_send=False,
-        route_path=False,
+        route_path=False
     )
 
     module.exit_json(msg=f"{ret}", changed=False)
