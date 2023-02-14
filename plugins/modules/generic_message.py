@@ -177,7 +177,7 @@ def main():
     if not request_data:
         request_data = b""
     else:
-        request_data = bytes(int(request_data, 0)),
+        request_data = bytes(int(request_data, 0)), # pylint: disable=trailing-comma-tuple
 
     ret = logix_util.plc.generic_message(
         service=int(
