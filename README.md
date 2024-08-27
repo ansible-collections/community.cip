@@ -11,8 +11,8 @@ Collection to manage Programmable Logic Controllers (PLC) via the Common Industr
 To use this while developing, run the following commands from within your local directory you pulled to this git repo to in order to symlink this git repo to the appropriate Ansible Collection path
 
 ```shell
-  mkdir -p ~/.ansible/collections/ansible_collections/community
-  ln -s $(pwd) ~/.ansible/collections/ansible_collections/community/cip
+mkdir -p ~/.ansible/collections/ansible_collections/community
+ln -s $(pwd) ~/.ansible/collections/ansible_collections/community/cip
 ```
 
 ## Execution Environment
@@ -29,11 +29,18 @@ If you encounter abusive behavior, please refer to the [policy violations](https
 
 <!--List available communication channels. In addition to channels specific to your collection, we also recommend to use the following ones.-->
 
-We announce releases and important changes through Ansible's [The Bullhorn newsletter](https://github.com/ansible/community/wiki/News#the-bullhorn). Be sure you are [subscribed](https://eepurl.com/gZmiEP).
+Join the Ansible forum to ask questions, get help, and interact with us.
 
-Join us in the `#devel:ansible.com` (general use questions and support), `#community:ansible.com` (community and collection development questions), and other [Matrix channels](https://docs.ansible.com/ansible/devel/community/communication.html#ansible-community-on-matrix).
+- [Get Help](https://forum.ansible.com/c/help/6): get help or help others.
+  Please add appropriate tags if you start new discussions.
+- [Social Spaces](https://forum.ansible.com/c/chat/4): meet and interact with
+  fellow enthusiasts.
+- [News & Announcements](https://forum.ansible.com/c/news/5): track project-wide
+  announcements including social events.
 
-We take part in the global quarterly [Ansible Contributor Summit](https://github.com/ansible/community/wiki/Contributor-Summit) virtually or in-person. Track [The Bullhorn newsletter](https://eepurl.com/gZmiEP) and join us.
+We announce releases and important changes through Ansible's [Bullhorn newsletter](https://docs.ansible.com/ansible/devel/community/communication.html#the-bullhorn).
+
+We also take part in the global quarterly [Ansible Contributor Summit](https://github.com/ansible/community/wiki/Contributor-Summit) virtually or in-person.
 
 For more information about communication, refer to the [Ansible Communication guide](https://docs.ansible.com/ansible/devel/community/communication.html).
 
@@ -51,11 +58,11 @@ You don't know how to start? Refer to our [contribution guide](https://docs.ansi
 
 We use the following guidelines:
 
-* [CONTRIBUTING](https://docs.ansible.com/ansible/devel/community/contributor_path.html#making-your-first-contribution)
-* [REVIEW_CHECKLIST](https://docs.ansible.com/ansible/devel/community/collection_contributors/collection_reviewing.html)
-* [Ansible Community Guide](https://docs.ansible.com/ansible/latest/community/index.html)
-* [Ansible Development Guide](https://docs.ansible.com/ansible/devel/dev_guide/index.html)
-* [Ansible Collection Development Guide](https://docs.ansible.com/ansible/devel/dev_guide/developing_collections.html#contributing-to-collections)
+- [CONTRIBUTING](https://docs.ansible.com/ansible/devel/community/contributor_path.html#making-your-first-contribution)
+- [REVIEW_CHECKLIST](https://docs.ansible.com/ansible/devel/community/collection_contributors/collection_reviewing.html)
+- [Ansible Community Guide](https://docs.ansible.com/ansible/latest/community/index.html)
+- [Ansible Development Guide](https://docs.ansible.com/ansible/devel/dev_guide/index.html)
+- [Ansible Collection Development Guide](https://docs.ansible.com/ansible/devel/dev_guide/developing_collections.html#contributing-to-collections)
 
 ## Collection maintenance
 
@@ -79,7 +86,9 @@ Every voice is important. If you have something on your mind, create an issue or
 
 <!-- List any external resources the collection depends on, for example minimum versions of an OS, libraries, or utilities. Do not list other Ansible collections here. -->
 [Python pycomm3 library](https://github.com/ottowayi/pycomm3)
+
 ### Supported connections
+
 <!-- Optional. If your collection supports only specific connection types (such as HTTPAPI, netconf, or others), list them here. -->
 
 ## Included content
@@ -93,36 +102,37 @@ Every voice is important. If you have something on your mind, create an issue or
 ### Gather CIP Facts
 
 ```shell
-  ansible-playbook playbooks/cip_facts.yml -i docs/example/inventory.ini 
+ansible-playbook playbooks/cip_facts.yml -i docs/example/inventory.ini
 ```
 
 ### Verify CIP Identity
 
 ```shell
-  ansible-playbook playbooks/verify_cip_identity.yml -i docs/example/inventory.ini 
+ansible-playbook playbooks/verify_cip_identity.yml -i docs/example/inventory.ini
 ```
 
 ### Verify Tag Value
 
 ```shell
-  ansible-playbook playbooks/verify_valid_tag_value.yml -i docs/example/inventory.ini 
+ansible-playbook playbooks/verify_valid_tag_value.yml -i docs/example/inventory.ini
 ```
 
 ### Verify Firmware Version
 
 ```shell
-  ansible-playbook playbooks/verify_firmware_version.yml -i docs/example/inventory.ini 
+ansible-playbook playbooks/verify_firmware_version.yml -i docs/example/inventory.ini
 ```
+
 ### Ensure Tags are what we want them to be
 
 ```shell
-  ansible-playbook playbooks/ensure_tags.yml -i docs/example/inventory.ini 
+ansible-playbook playbooks/ensure_tags.yml -i docs/example/inventory.ini
 ```
 
 ### Do all above tasks
 
 ```shell
-  ansible-playbook playbooks/main.yml -i docs/example/inventory.ini 
+ansible-playbook playbooks/main.yml -i docs/example/inventory.ini
 ```
 
 ### Installing the Collection from Ansible Galaxy
@@ -161,15 +171,12 @@ See the [changelog](https://github.com/ansible-collections/community.cip/tree/ma
 
 ## More information
 
-<!-- List out where the user can find additional information, such as working group meeting times, slack/IRC channels, or documentation for the product this collection automates. At a minimum, link to: -->
-
-* [Ansible Collection overview](https://github.com/ansible-collections/overview)
-* [Ansible User guide](https://docs.ansible.com/ansible/devel/user_guide/index.html)
-* [Ansible Developer guide](https://docs.ansible.com/ansible/devel/dev_guide/index.html)
-* [Ansible Collections Checklist](https://github.com/ansible-collections/overview/blob/main/collection_requirements.rst)
-* [Ansible Community code of conduct](https://docs.ansible.com/ansible/devel/community/code_of_conduct.html)
-* [The Bullhorn (the Ansible Contributor newsletter)](https://us19.campaign-archive.com/home/?u=56d874e027110e35dea0e03c1&id=d6635f5420)
-* [News for Maintainers](https://github.com/ansible-collections/news-for-maintainers)
+- [Ansible Collection overview](https://github.com/ansible-collections/overview)
+- [Ansible User guide](https://docs.ansible.com/ansible/devel/user_guide/index.html)
+- [Ansible Developer guide](https://docs.ansible.com/ansible/devel/dev_guide/index.html)
+- [Ansible Collections Checklist](https://github.com/ansible-collections/overview/blob/main/collection_requirements.rst)
+- [Ansible Community code of conduct](https://docs.ansible.com/ansible/devel/community/code_of_conduct.html)
+- [News for Maintainers](https://forum.ansible.com/tag/news-for-maintainers)
 
 ## Friendly Reminder
 
