@@ -41,8 +41,6 @@ Join the Ansible forum to ask questions, get help, and interact with us.
 
 We announce releases and important changes through Ansible's [Bullhorn newsletter](https://docs.ansible.com/ansible/devel/community/communication.html#the-bullhorn).
 
-We also take part in the global quarterly [Ansible Contributor Summit](https://github.com/ansible/community/wiki/Contributor-Summit) virtually or in-person.
-
 For more information about communication, refer to the [Ansible Communication guide](https://docs.ansible.com/ansible/devel/community/communication.html).
 
 ## Contributing to this collection
